@@ -1,0 +1,52 @@
+﻿<ion-view title="Editar Usuario" ng-controller="EditUserController">
+    <ion-content has-header="true" padding="true">
+        <div class="list">
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Nombre</span>
+                <input type="text" data-ng-model="user.FirstName">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Apellido</span>
+                <input type="text" data-ng-model="user.LastName">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Telefono</span>
+                <input type="text" data-ng-model="user.Tel">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Mail</span>
+                <input type="text" data-ng-model="user.Email">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Profesión</span>
+                <input type="text" data-ng-model="user.StudyField">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">País</span>
+                <input type="text" data-ng-model="user.Country">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Provincia</span>
+                <input type="text" data-ng-model="user.State">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Ciudad</span>
+                <input type="text" data-ng-model="user.City">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Organizacion</span>
+                <input type="text" data-ng-model="user.Organization">
+            </label>
+            <label class="item item-input item-stacked-label">
+                <span class="input-label">Cargo</span>
+                <input type="text" data-ng-model="user.Function">
+            </label>
+            
+            <div class="button-bar">
+                <a ng-click="goBack()" class=" button">Cancelar</a>
+                <a ng-click="showConfirm()" class="button">Guardar</a>
+            </div>
+        </div>
+    </ion-content>
+</ion-view>
+

@@ -1,0 +1,28 @@
+﻿<ion-view ng-controller="NotificationController" no-scroll>
+    <ion-content has-header="true" padding="true">
+        <div class="list card">
+            <div class="item item-avatar" style="border:0" ng-show="{{card.userId}} === 0">
+                <img src="/img/alertImg.jpg">
+                <h2 style="font-weight: bold; white-space: pre-line; font-style: italic; font-family: serif; font-variant: small-caps;">{{card.title}}</h2>
+            </div>
+            <div class="item item-avatar" style="border:0" ng-show="{{card.userId}} !== 0">
+                <img src="/img/feedbackImg.jpg">
+                <h2 style="font-weight: bold; white-space: pre-line; font-style: italic; font-family: serif; font-variant: small-caps;">{{card.title}}</h2>
+            </div>
+            <div class="item item-body activityBorder" ng-class="{notificationBorder: {{card.userId}} === 0, feedbackBorder: {{card.userId}} !== 0 }">
+                <div ng-show="{{card.userId}} !== 0" style="margin-bottom:10px;">
+                    <h4 style="margin-top: 5px;">
+                        <i class="icon ion-bookmark" style="margin-right: 11px; margin-left: 2px;"></i>
+                        {{card.activity}}
+                    </h4>
+                    <h4 style="margin-top: 10px; ">
+                        <i class="icon ion-person" style="margin-right:9px;"></i>
+                        {{card.userName}}
+                    </h4>
+                </div>
+                <p style="font-family: cursive; font-style: italic;">
+                    {{card.description}}
+                </p>
+            </div>
+    </ion-content>
+</ion-view>

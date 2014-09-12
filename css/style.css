@@ -1,0 +1,270 @@
+/* Empty. Add your own CSS if you like */
+
+
+.bar.bar-transparent {
+    background-color: transparent;
+    background-image: none;
+    border: none;
+}
+
+.bar .title {
+    color: #eee;
+}
+
+.swipe-cards {
+    position: fixed;
+}
+
+.swipe-card {
+    -webkit-perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    display: none;
+    position: fixed;
+    -webkit-transform: scale(1,1);
+    top: -1000%;
+    left: -5%;
+    width: 90%;
+    height: 1600%;
+    margin-left: 10%;
+    margin-top: 250px;
+    box-sizing: border-box;
+    background-color: rgb(255,255,255);
+    border-radius: 4px;
+    overflow: hidden;
+    -webkit-animation-fill-mode: forwards;
+    vertical-align: middle;
+}
+
+    .swipe-card .title {
+        height: 40px;
+        padding: 5px;
+        line-height: 30px;
+        color: #444;
+    }
+
+    .swipe-card .image {
+        overflow: hidden;
+        max-height: 210px;
+    }
+
+    .swipe-card .button {
+        border: none;
+    }
+
+    .swipe-card .image img {
+        width: 100%;
+        border-radius: 0px 0px 4px 4px;
+    }
+
+#start-card {
+    color: #fff;
+    background-color: #30BD8A;
+    line-height: 300px;
+    word-wrap: break-word;
+    border: 6px solid #4CD68E;
+    text-align: center;
+}
+
+    #start-card span {
+        display: inline-block;
+        line-height: 40px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 30px;
+        vertical-align: middle;
+    }
+
+#footer .button {
+    color: #fff;
+}
+
+@-webkit-keyframes bounceIn {
+    0% {
+        -webkit-transform: scale(0,0);
+    }
+
+    70% {
+        -webkit-transform: scale(1.2,1.2);
+    }
+
+    100% {
+        -webkit-transform: scale(1,1);
+    }
+}
+
+.swipe-card.pop-in-start {
+    -webkit-transform: scale(0,0);
+}
+
+.swipe-card.pop-in {
+    -webkit-animation: bounceIn 0.3s ease-out;
+}
+
+.imgFrame {
+    width: 95%;
+    height: auto;
+}
+
+.col-10 a.button.button-icon.icon.ion-edit:before {
+    font-size: 150%;
+}
+
+.col-15 a.button.button-icon.icon.ion-trash-a:before {
+    font-size: 200%;
+}
+
+
+.color-white {
+    color: white;
+}
+
+.tab-title {
+    color: white;
+}
+
+.scheduleEventPadding {
+    padding: 0 !important;
+}
+
+.checkbox input, .checkbox-icon {
+    width: 20px !important;
+    height: 20px !important;
+    margin-left: 10px;
+}
+
+    .checkbox input:after, .checkbox-icon:after {
+        width: 10px !important;
+        height: 6.33333px !important;
+    }
+
+
+.lateralBorders {
+    border-left: 1px solid #b2b2b2;
+    border-right: 1px solid #b2b2b2;
+}
+
+.topBorder {
+    border-top: 1px solid #b2b2b2;
+}
+
+.bottomBorder {
+    border-bottom: 1px solid #b2b2b2;
+}
+
+.ion-android-checkmark:before {
+    content: "\f2d5";
+    margin-top: 17px !important;
+}
+
+.ion-android-alarm:before {
+    content: "\f2c8";
+    margin-top: 17px !important;
+}
+
+
+.slider-pager {
+    position: relative !important;
+}
+
+.noPadding {
+    padding: 0;
+}
+
+.cardContent {
+    margin: 0 !important;
+    border-width: 0 !important;
+    box-shadow: none !important;
+    max-height: 300px !important;
+    height: 300px !important;
+}
+
+
+
+.sliderTitle {
+    font-weight: bold;
+    font-size: 11px;
+    float: left;
+    font-style: italic;
+    margin-top: 2px;
+    white-space: pre-line;
+}
+
+.feedbackNotifBody {
+    height: 84%;
+    background-color: rgb(240,240,240);
+}
+
+.feedbackHeader {
+    background-color: #D4E3FC;
+}
+
+.notificationHeader {
+    background-color: #FFDAD8;
+}
+
+.red {
+}
+
+.green {
+}
+
+.ion-close-round.green:before {
+    content: "\f129";
+    font-weight: bolder;
+    font-size: large;
+    color: rgb(0,161,201);
+}
+
+.ion-close-round.red:before {
+    content: "\f129";
+    font-weight: bolder;
+    font-size: large;
+    color: #E61610;
+}
+
+.homeBackground {
+    background-image: url(/img/logoAAC.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position-y: 70px;
+}
+
+.imgSize {
+    height: auto !important;
+    width: 200px !important;
+}
+
+
+.activityBorder {
+    border-width: 10px 0 0 0 !important;
+    border-style: solid;
+}
+
+.notificationBorder {
+    border-color: #E61610;
+}
+
+.feedbackBorder {
+    border-color: rgb(0,161,201);
+}
+
+.scroll.padding {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.bar.bar-aac {
+    border-color: RGB(69,107,165) !important;
+    background-color: RGB(69,107,165) !important;
+    background-image: linear-gradient(0deg, #111, #111 50%, transparent 50%) !important;
+    color: #fff !important;
+}
+
+    .bar.bar-aac .title {
+        color: #fff !important;
+    }
+
+.tabs {
+    border-color: RGB(69,107,165) !important;
+    background-color: RGB(69,107,165) !important;
+}

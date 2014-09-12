@@ -1,0 +1,34 @@
+<ion-view title="Evento" ng-controller="ActivityController">
+    <ion-content has-header="true" padding="true">
+
+        <div class="list card">
+            <div class="item" style="padding: 5px 0 7px 10px; border:none;">
+                <h2 style="font-weight: bold; white-space: pre-line; font-style: italic; font-family: serif; font-variant: small-caps;">{{event.data.title}}</h2>
+            </div>
+            <div class="item item-body activityBorder" style="margin-top: 15px; border-color:{{event.data.categoryColor}};">
+                <h4 style="margin-top: 5px;"><i class="icon ion-calendar" style="margin-right:5px;"></i>LUN  {{getDate(event.data.dateStart)}}  -  {{getInitTime(event.data.dateStart)}} a {{getEndTime(event.data.dateFinish)}}</h4>
+                <h4 style="margin-top: 10px; white-space: pre-line;"><i class="icon ion-pricetag" style="margin-right:5px;"></i>{{event.data.categoryName}}</h4>
+                <h4 style="margin-top: 10px; white-space: pre-line; "><i class="icon ion-location" style="margin-right:9px;"></i>{{event.data.location}}</h4>
+                <p style="font-family: cursive; font-style: italic;">
+                    {{event.data.description}}
+                </p>
+                <div class="row" style="padding-top: 0; padding-left: 0; margin-top:15px;">
+                    <div class="col col-10" style="padding-top: 0; padding-left: 0; padding-right: 0;">
+                        <h6 style="display: inline !important; margin-right: -3px; "><i class="icon ion-person-stalker" style="margin-right: 5px;"></i></h6>
+                    </div>
+                    <div class="col col-90" style="padding-top: 7px; padding-left: 0;">
+                        <h4 ng-repeat="speaker in event.data.speakers" style="display:block !important; margin:0;">
+                            {{speaker.completeName}}
+                        </h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item tabs tabs-secondary tabs-icon-left">
+                <button class="button button-stable button-full" ng-click="activityClick()" style="font-weight:bold; font-size: 15px; margin:0;">
+                    <i class="icon ion-checkmark" ng-class="{positive: event.checked === true}"></i>
+                    Asistir
+                </button>
+            </div>
+    </ion-content>
+</ion-view>

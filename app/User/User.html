@@ -1,0 +1,63 @@
+﻿<ion-view title="Usuario" ng-controller="UserController">
+    <ion-content has-header="true" padding="true">
+        <ion-nav-buttons side="right">
+            <button class="button button-icon icon color-white" ng-show="isProfile()" ng-click="goToEditUser({{user.Id}})">Edit</button>
+        </ion-nav-buttons>
+        <div class="item item-thumbnail-left">
+
+            <img src="/img/profileImage.png">
+            <h2>{{user.CompleteName}}</h2>
+            <p>{{user.StudyField}}</p>
+        </div>
+
+            <div class="list">
+                <div class="item ">
+                    <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isLog">Organización: </h2> <span ng-show="isLog">{{user.Organization}} </span></div>
+                    <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isLog">Cargo: </h2> <span ng-show="isLog">{{user.Function}} </span></div>  
+                    <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isLog">Título: </h2> <span ng-show="isLog">{{user.Title}} </span></div> 
+                    
+                    <div style="margin-bottom:10px"><h2 style="display: inline; ">País: </h2> <span>{{user.Country}} </span></div> 
+                    <div style="margin-bottom:10px"><h2 style="display: inline; ">Provincia: </h2> <span>{{user.State}} </span></div> 
+                    <div style="margin-bottom:10px"><h2 style="display: inline; ">Ciudad: </h2> <span>{{user.City}} </span></div> 
+                    <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isLog">Email: </h2> <span ng-show="isLog">{{user.Email}} </span></div> 
+                    <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isLog">Telefono: </h2> <span ng-show="isLog">{{user.Tel}} </span></div> 
+                    <!--<h2 style="display: inline; ">Edad: </h2> <span>45 Años</span><br />-->
+                    
+                    
+                </div>
+                
+                <!--div class="item item-avatar">
+                <!--<img src="/img/profileImage.png">-->
+                <!--h2>{{user.name}}</!--h2>
+                <p>{{user.profession}}</p>
+            </!--div>
+
+            <!--<div class="item item-body">
+                <img class="full-image" src="/img/profileImage.png">
+                <p>
+                    Doctor: {{user.name}}
+                </p>
+                <br />
+                <p>
+                    {{user.profession}}
+                </p>
+
+            </div>-->
+                <!--<div class="item tabs tabs-secondary tabs-icon-left">
+                <a class="tab-item" href="#">
+                    <i class="icon ion-thumbsup"></i>
+                    Like
+                </a>
+                <a class="tab-item" href="#">
+                    <i class="icon ion-chatbox"></i>
+                    Comment
+                </a>
+                <a class="tab-item" href="#">
+                    <i class="icon ion-share"></i>
+                    Share
+                </a>
+            </div>-->
+
+            </div>
+</ion-content>
+</ion-view>

@@ -1,0 +1,16 @@
+﻿<ion-view ng-controller="NoteController">
+    <ion-content has-header="true" padding="true">
+        <div class="card">
+            <div class="item item-divider item-input">
+                <input type="text" ng-model="note.title" placeholder="Ingrese un título" style="font-weight:bold;">
+            </div>
+            <br />
+            <div class="item item-text-wrap item-input">
+                <textarea typeof="text" ng-model="note.description" placeholder="Ingrese texto" style="height:300px;"></textarea>
+            </div>
+            <button class="button button-stable" ng-click="saveChanges()" style="margin-top: 10px; margin-bottom: 10px;">
+                Guardar
+            </button>
+        </div>
+    </ion-content>
+</ion-view>
