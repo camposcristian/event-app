@@ -17,6 +17,7 @@
     <!-- Don't store local date in an iCloud backup. Turn this to "cloud" to enable storage 
          to be sent to iCloud. Note: enabling this could result in Apple rejecting your app.
     -->
+    <gap:plugin name="com.phonegap.plugins.barcodescanner" version="2.0.0" />
     <preference name="BackupWebStorage" value="none" />
   <icon src="icon.png" />
     <feature name="StatusBar">
