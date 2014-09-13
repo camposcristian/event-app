@@ -223,7 +223,7 @@
 }
 
 .homeBackground {
-    background-image: url(/img/logoAAC.jpg);
+    background-image: url(../img/logoAAC.jpg);
     background-size: contain;
     background-repeat: no-repeat;
     background-position-y: 70px;

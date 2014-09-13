@@ -9,8 +9,8 @@ angular.module('aac.services',
 
 
 .factory('BaseUrl', function () {
-    //return 'https://aaclupersoft.azurewebsites.net';
-    return 'http://localhost:41222';
+    return 'https://aaclupersoft.azurewebsites.net';
+    // return 'http://localhost:41222';
 })
 
 .factory('Store', function () {
@@ -111,8 +111,8 @@ angular.module('aac.services',
 
 
 .factory('BaseUrlAPI', function () {
-    //return 'http://aaclupersoft.azure-mobile.net/'; CAMBIAR
-    return 'http://localhost:59484/';
+    return 'http://aaclupersoft.azure-mobile.net/'; CAMBIAR
+    // return 'http://localhost:59484/';
 })
 
 .factory('WebApiToken', function () {

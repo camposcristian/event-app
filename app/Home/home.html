@@ -31,11 +31,11 @@
                                 <!--BODY-->
                                 <div class="item item-body item-text-wrap lateralBorders topBorder bottomBorder feedbackNotifBody" ng-click="goToNotificationDetail({{card.id}})">
                                     <div class="item item-image" ng-show="{{card.userId}} === 0" style=" background-color: rgb(240,240,240); border: 0;">
-                                        <img src="/img/alertImg.jpg" class="imgSize">
+                                        <img src="./img/alertImg.jpg" class="imgSize">
                                     </div>
                                     <div ng-show="{{card.userId}} !== 0" style="margin-bottom:10px;">
                                         <div class="item item-image" style="background-color: rgb(240,240,240); border: 0;">
-                                            <img src="/img/feedbackImg.jpg" class="imgSize">
+                                            <img src="./img/feedbackImg.jpg" class="imgSize">
                                         </div>
                                         <h5><i class="icon ion-bookmark" style="margin-right: 11px; margin-left: 2px;"></i>{{card.activity}}</h5>
                                         <h5><i class="icon ion-person" style="margin-right: 9px;"></i>{{card.userName}}</h5>
