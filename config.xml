@@ -18,7 +18,7 @@
          to be sent to iCloud. Note: enabling this could result in Apple rejecting your app.
     -->
     <preference name="BackupWebStorage" value="none" />
-    <gap:plugin name="com.phonegap.plugins.barcodescanner" />
+    <!--<gap:plugin name="com.phonegap.plugins.barcodescanner" />-->
     <icon src="icon.png" />
     <gap:splash src="res/screen/android/screen-ldpi-portrait.png"       gap:platform="android" gap:qualifier="port-ldpi" />
     <gap:splash src="res/screen/android/screen-mdpi-portrait.png"       gap:platform="android" gap:qualifier="port-mdpi" />
