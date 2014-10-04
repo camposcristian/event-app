@@ -1,5 +1,5 @@
-﻿<ion-view ng-controller="QRController" no-scroll>
+<ion-view ng-controller="QrController" no-scroll>
     <ion-content has-header="true" padding="true">
-        <img style="margin:0 auto;display: block; margin-top: 60px;"src="http://api.qrserver.com/v1/create-qr-code/?color=000000&amp;bgcolor=FFFFFF&amp;data=1&amp;qzone=1&amp;margin=0&amp;size=400x400&amp;ecc=L" alt="qr code" />
+        <img style="margin:0 auto;display: block; margin-top: 60px;" ng-src="{{qrUrl+qrId+qrParams}}" alt="qr code" />
     </ion-content>
 </ion-view>

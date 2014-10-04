@@ -19,7 +19,7 @@
                                 <div class="item item-divider lateralBorders topBorder noPadding" ng-class="{notificationHeader: {{card.userId}} === 0, feedbackHeader: {{card.userId}} !== 0 }">
                                     <div class="row">
                                         <div class="col col-80" style="width:80%;">
-                                            <h4 class="sliderTitle">{{slice(card.title)}}</h4>
+                                            <h4 class="sliderTitle sliced">{{card.title}}</h4>
                                         </div>
                                         <div class="col col-20" style="width:20%;">
                                             <a style="float:right; font-size:11px;" ng-click="deleteNotification({{card.id}})">
@@ -29,7 +29,7 @@
                                     </div>
                                 </div>
                                 <!--BODY-->
-                                <div class="item item-body item-text-wrap lateralBorders topBorder bottomBorder feedbackNotifBody" ng-click="goToNotificationDetail({{card.id}})">
+                                <div class="item item-body item-text-wrap lateralBorders topBorder bottomBorder feedbackNotifBody" ng-click="goToNotificationDetail({{card.id}})" style="padding: 16px 8px 16px 7px;">
                                     <div class="item item-image" ng-show="{{card.userId}} === 0" style=" background-color: rgb(240,240,240); border: 0;">
                                         <img src="./img/alertImg.jpg" class="imgSize">
                                     </div>

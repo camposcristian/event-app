@@ -1,30 +1,41 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.lupersoft.aac" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>AAC.85</name>
-    <description>
-        85° Congreso de cirugia
-    </description>
-    <author email="pepita@pdp.com" href="http://ionicframework.com/">
-      Ionic Framework Team
-    </author>
-    <content src="index.html" />
-    <access origin="*" />
-    <preference name="fullscreen" value="true" />
-    <preference name="webviewbounce" value="false" />
-    <preference name="UIWebViewBounce" value="false" />
-    <preference name="DisallowOverscroll" value="true" />
+<widget id="com.lupersoft.aac" version="0.9.8" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0" xmlns:gap="http://phonegap.com/ns/1.0">
+	<name>AAC.85</name>
+	<description>
+		85° Congreso de cirugia
+	</description>
+	<author email="pepita@pdp.com" href="http://ionicframework.com/">
+		Lupersoft
+	</author>
+	<content src="index.html" />
+	<access origin="*" />
+	<preference name="fullscreen" value="true" />
+	<preference name="webviewbounce" value="false" />
+	<preference name="UIWebViewBounce" value="false" />
+	<preference name="DisallowOverscroll" value="true" />
+	<preference name="SplashScreen" value="screen" />
+	<preference name="SplashScreenDelay" value="2000" />
+	<preference name="auto-hide-splash-screen" value="false" />
+	<preference name="AutoHideSplashScreen" value="false" />
+	<preference name="orientation" value="portrait" />        <!-- all: default means both landscape and portrait are enabled -->
 
-    <!-- Don't store local date in an iCloud backup. Turn this to "cloud" to enable storage 
+
+  <!-- Don't store local date in an iCloud backup. Turn this to "cloud" to enable storage 
          to be sent to iCloud. Note: enabling this could result in Apple rejecting your app.
-    -->
-    <preference name="BackupWebStorage" value="none" />
-    <gap:plugin name="com.phonegap.plugins.barcodescanner" /> 
-    <icon src="icon.png" />
-    <gap:splash src="res/screen/android/screen-ldpi-portrait.png"       gap:platform="android" gap:qualifier="port-ldpi" />
-    <gap:splash src="res/screen/android/screen-mdpi-portrait.png"       gap:platform="android" gap:qualifier="port-mdpi" />
-    <gap:splash src="res/screen/android/screen-hdpi-portrait.png"       gap:platform="android" gap:qualifier="port-hdpi" />
-    <gap:splash src="res/screen/android/screen-xhdpi-portrait.png"      gap:platform="android" gap:qualifier="port-xhdpi" />
-    <feature name="StatusBar">
-      <param name="ios-package" value="CDVStatusBar" onload="true" />
-    </feature>
-</widget>
+     -->
+     <preference name="BackupWebStorage" value="none" />
+
+     <feature name="StatusBar">
+     	<param name="ios-package" value="CDVStatusBar" onload="true" />
+     </feature>
+     <feature name="SplashScreen">
+     	<param name="android-package" value="org.apache.cordova.splashscreen.SplashScreen" />
+     </feature>
+     <gap:plugin name="com.phonegap.plugins.barcodescanner"/>
+     <gap:plugin name="org.apache.cordova.camera"/>
+     <gap:plugin name="org.apache.cordova.contacts"/>
+     <gap:plugin name="org.apache.cordova.file"/>
+     <gap:plugin name="org.apache.cordova.splashscreen"/>
+     <gap:plugin name="nl.x-services.plugins.calendar"/>
+     <gap:plugin name="com.ionic.keyboard"/>
+ </widget>

@@ -1,6 +1,6 @@
-﻿angular.module('aac.home.controller',[])
+﻿angular.module('aac.home.controller', [])
 
-.controller('HomeController', function ($scope, $location, $ionicSlideBoxDelegate, $cordovaBarcodeScanner,Store, WebApiFactory) {
+.controller('HomeController', function ($scope, $state, $location, $ionicSlideBoxDelegate,$ionicLoading, $cordovaBarcodeScanner, Store, WebApiFactory) {
 
     //SLIDER
     $scope.next = function () {
@@ -13,17 +13,21 @@
         $ionicSlideBoxDelegate.update();
     }
     $scope.scanCode = function () {
-        $cordovaBarcodeScanner.scan().then(function (imageData) {
-            alert(imageData)
-            // Success! Barcode data is here
+        var id = localStorage["UserId"]
+        if (id != null) {
+            $cordovaBarcodeScanner.scan().then(function (imageData) {
+                $state.go("tab.participant", { Id: imageData.text, Qr: true });
 
-
-        }, function (err) {
-            alert(imageData)
-
-            // An error occured. Show a message to the user
-
-        });
+            }, function (err) {
+                $ionicLoading.show({ template: err, noBackdrop: true, duration: 1000 });
+                $state.go("tab.home");
+                return;
+            });
+        }
+        else {
+            $ionicLoading.show({ template: "Debe iniciar sesión para poder continuar", noBackdrop: true, duration: 1000 });
+            $state.go("tab.more");
+        }
     };
 
     //CARGA DE DATOS
@@ -94,7 +98,7 @@
         var allNotifications = Store.get('Notifications');
         return allNotifications.length === 0;
     };
-    
+
     //ACORTAR EL TITULO DE LA NOTIFICACION PARA MEJORAR LA VISTA
     $scope.slice = function (text) {
         if (text.length < 30)
@@ -120,9 +124,9 @@
 .controller('NotificationController', function ($scope, $stateParams, Store) {
     var selectedNotification;
     var allNotifications = Store.get('Notifications');
-    allNotifications.forEach( function (notif) {
-        if(notif.id === $stateParams.Id)
-        { selectedNotification = notif; }       
+    allNotifications.forEach(function (notif) {
+        if (notif.id === $stateParams.Id)
+        { selectedNotification = notif; }
     })
     $scope.card = selectedNotification;
 })

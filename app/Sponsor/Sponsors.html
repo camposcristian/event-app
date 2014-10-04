@@ -1,0 +1,11 @@
+﻿<ion-view title="Sponsors {{type}}">
+    <ion-content has-header="true" padding="true">
+        <div class="list">
+            <a class="item item-avatar" ng-repeat="sponsor in sponsors | orderBy: 'order'" href="#/tab/sponsor/{{sponsor.type}}/{{sponsor.id}}">
+                <img src={{sponsor.logoImg}}>
+                <h2 class="sliced">{{sponsor.name}}</h2>
+                <p class="sliced">{{sponsor.description}}</p>
+            </a>
+        </div>
+    </ion-content>
+</ion-view>

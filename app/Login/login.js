@@ -1,20 +1,30 @@
 ﻿angular.module('aac.login.controller', [])
 
-.controller('LoginController', function ($scope, $rootScope, $state, AuthService, $ionicLoading) {
+.controller('LoginController', function ($scope, $rootScope, $state, $ionicPopup, AuthService, $ionicLoading) {
     $scope.submit = function (user) {
-        $scope.loadingIndicator = $ionicLoading.show({
+        $ionicLoading.show({
             content: '<i class="icon ion-loading-c"></i><br/>Cargando',
             animation: 'fade-in',
-            showBackdrop: false,
+            showBackdrop: true,
             maxWidth: 200,
             showDelay: 0
         });
 
         AuthService.login(user).then(function (result) {
-            $scope.loadingIndicator.hide();
+            $ionicLoading.hide();
+            if (!$scope.$$phase) {
+                $scope.$apply();
+            }
             $state.transitionTo("tab.more");
         }, function (error) {
             $scope.loadingIndicator.hide();
+            var alertPopup = $ionicPopup.alert({
+                title: 'ERROR DE LOGIN',
+                template: 'Usuario y/o contraseña invalidos'
+            });
+            alertPopup.then(function (res) {
+                console.log('Thank you for not eating my delicious ice cream cone');
+            });
         });
     }
 });
@@ -55,22 +65,19 @@ angular.module('aac.login.service', [])
             var deferred = $q.defer();
             user.grant_type = "password";
             var header = { "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8" }
-
-            $http.defaults.transformRequest = function (data) {
-                var str = [];
-                for (var p in data)
-                    if (data.hasOwnProperty(p)) {
-                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(data[p]));
-                    }
-                return str.join("&");
-            }
-
-            $http.post(BaseUrl + "/token", user, { headers: header })
-            .success(function (data) {
-                localStorage["token"] = data.access_token;
+            var encodedData = "username=" + user.username + "&password=" + user.password + "&grant_type=" + user.grant_type;
+            $http({
+                url: BaseUrl+'/token',
+                method: 'POST',
+                headers: header,
+                data: encodedData,
+            })
+                .success(function (data) {
+                    localStorage["token"] = data.access_token;
+                    localStorage["UserId"] = data.userId;
                 deferred.resolve();
             })
-			.error(deferred.reject);
+               .error(deferred.reject);
             return deferred.promise;
         }
 

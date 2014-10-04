@@ -1,52 +1,94 @@
-﻿<ion-view title="Editar Usuario" ng-controller="EditUserController">
+<ion-view title="Editar Usuario" ng-controller="EditUserController">
     <ion-content has-header="true" padding="true">
-        <div class="list">
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Nombre</span>
-                <input type="text" data-ng-model="user.FirstName">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Apellido</span>
-                <input type="text" data-ng-model="user.LastName">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Telefono</span>
-                <input type="text" data-ng-model="user.Tel">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Mail</span>
-                <input type="text" data-ng-model="user.Email">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Profesión</span>
-                <input type="text" data-ng-model="user.StudyField">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">País</span>
-                <input type="text" data-ng-model="user.Country">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Provincia</span>
-                <input type="text" data-ng-model="user.State">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Ciudad</span>
-                <input type="text" data-ng-model="user.City">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Organizacion</span>
-                <input type="text" data-ng-model="user.Organization">
-            </label>
-            <label class="item item-input item-stacked-label">
-                <span class="input-label">Cargo</span>
-                <input type="text" data-ng-model="user.Function">
-            </label>
-            
-            <div class="button-bar">
-                <a ng-click="goBack()" class=" button">Cancelar</a>
-                <a ng-click="showConfirm()" class="button">Guardar</a>
+
+        <form name="editionForm">
+            <div class="list">
+                <div class="item item-thumbnail-left">
+
+                    <img ng-src="{{ImageURI}}" ng-click="cargarImg()" ng-mouseover="showButton=true" ng-mouseleave="showButton=false" id="myImage" ng-mouseover="showButton=true" ng-mouseleave="showButton=false" />
+                    <!--<input type="text" ng-model="ImageURI" size="30" />-->
+                    <h2>
+                        {{user.CompleteName}}
+                    </h2>
+                    <p>{{user.StudyField}}</p>
+                    
+
+                    <input type="file" id="takePicture" accept="image/*" style="opacity: 0" />
+                </div>
+                <!--<div class="item item-thumbnail-left">
+
+                    <img ng-src="{{uploadme.src}}" ng-click="cargarImg2()" ng-mouseover="showButton=true" ng-mouseleave="showButton=false" />
+                    <label class="item item-input item-stacked-label">
+                        <span class="input-label">Profesión</span>
+                        <input type="text" name="studyField" data-ng-model="user.StudyField" required>
+                        <span ng-show="editionForm.studyField.$error.required" style="color:red;">Campo Obligatorio</span>
+                    </label>
+                    <input type="file"
+                           id="takePicture2" accept="image/*" style="opacity: 0"
+                           fileread="uploadme.src" />
+                </div>-->
+
+
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Nombre</span>
+                    <input type="text" name="name" data-ng-model="user.FirstName" ng-pattern="/^[a-zA-Z\s]{2,50}$/" required>
+                    <span ng-show="editionForm.name.$error.pattern" style="color:red;">Campo no Valido</span>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Apellido</span>
+                    <input type="text" name="lastName" data-ng-model="user.LastName" ng-pattern="/^[a-zA-Z\s]{2,50}$/" required>
+                    <span ng-show="editionForm.lastName.$error.pattern" style="color:red;">Campo no Valido</span>
+                </label>
+
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Telefono</span>
+                    <input type="text" name="tel" data-ng-model="user.Tel" ng-pattern="/^[0-9\s\-]{0,50}$/">
+                    <span ng-show="editionForm.tel.$error.pattern" style="color:red;">Campo no Valido</span>
+
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Profesión</span>
+                    <input type="text" name="studyField" data-ng-model="user.StudyField" ng-pattern="/^[a-zA-Z\s]{2,50}$/" required>
+                    <span ng-show="editionForm.studyField.$error.required" style="color:red;">Campo Obligatorio no valido</span>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">País</span>
+                    <input type="text" name="country" data-ng-model="user.Country" ng-pattern="/^[a-zA-Z\s]{2,50}$/" required>
+                    <span ng-show="editionForm.country.$error.required" style="color:red;">Campo Obligatorio no valido</span>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Provincia</span>
+                    <input type="text" name="state" data-ng-model="user.State" ng-pattern="/^[a-zA-Z\s]{2,50}$/" required>
+                    <span ng-show="editionForm.state.$error.required" style="color:red;">Campo Obligatorio no valido</span>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Ciudad</span>
+                    <input type="text" name="city" data-ng-model="user.City" ng-pattern="/^[a-zA-Z\s]{2,50}$/" required>
+                    <span ng-show="editionForm.city.$error.required" style="color:red;">Campo Obligatorio no valido</span>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Organizacion</span>
+                    <input type="text" name="org" data-ng-model="user.Organization" ng-pattern="/^[a-zA-Z0-9\s]{0,50}$/">
+                    <span ng-show="editionForm.org.$error.required" style="color:red;">Campo no valido</span>
+                </label>
+                <label class="item item-input item-stacked-label">
+                    <span class="input-label">Cargo</span>
+                    <input type="text" name="carg" data-ng-model="user.Function" ng-pattern="/^[a-zA-Z0-9\s]{0,50}$/">
+                    <span ng-show="editionForm.carg.$error.required" style="color:red;">Campo no valido</span>
+                </label>
+
+                <div class="button-bar">
+                    <a ng-click="goBack()" class=" button">Cancelar</a>
+                    <a ng-click="showConfirm()" ng-disabled="editionForm.$invalid" class="button">Guardar</a>
+                </div>
             </div>
-        </div>
+        </form>
+
+
     </ion-content>
 </ion-view>
-
+<style>
+    input.ng-invalid {
+        border: 1px solid red;
+    }
+</style>

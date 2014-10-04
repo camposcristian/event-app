@@ -5,7 +5,7 @@
 // the 2nd parameter is an array of 'requires'
 // 'starter.services' is found in services.js
 // 'starter.controllers' is found in controllers.js
-angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
+angular.module('aac', ['ionic', 'aac.controllers', 'aac.services', 'ngCordova'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -20,8 +20,8 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
         }
     });
 })
-
-.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $compileProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|blob|cdvfile|content):|data:image\//);
 
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
@@ -31,8 +31,14 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
     // Set up the various states which the app can be in.
     // Each state's controller can be found in controllers.js
     $stateProvider
-
       // setup an abstract state for the tabs directive
+
+          .state('splash', {
+              url: '/splash',
+              templateUrl: 'app/Splash/splash.html',
+              controller: 'SplashController'
+          })
+
       .state('tab', {
           url: "/tab",
           abstract: true,
@@ -59,7 +65,6 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
                 }
             }
         })
-
           .state('tab.notificationDetail', {
               url: '/home/detail/:Id',
               views: {
@@ -111,7 +116,7 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
 
             }
         })
-        
+
           .state('tab.more', {
               url: '/more',
               views: {
@@ -122,7 +127,7 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
               }
           })
 
-        
+
         .state('tab.map', {
             url: '/map',
             views: {
@@ -154,10 +159,10 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
         })
 
         .state('tab.participant', {
-            url: '/participants/participant/:Id',
+            url: '/participants/participant/:Id?Qr',
             views: {
                 'more': {
-                    templateUrl: 'app/User/User.html',
+                    templateUrl: 'app/User/user.html',
                     controller: 'UserController'
                 }
             }
@@ -167,7 +172,7 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
             url: '/profile/:Id',
             views: {
                 'more': {
-                    templateUrl: 'app/User/User.html',
+                    templateUrl: 'app/User/user.html',
                     controller: 'UserController'
                 }
             }
@@ -177,7 +182,7 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
             url: '/editUser/:Id',
             views: {
                 'more': {
-                    templateUrl: 'app/User/EditUser.html',
+                    templateUrl: 'app/User/edituser.html',
                     controller: 'EditUserController'
                 }
             }
@@ -201,11 +206,74 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services','ngCordova'])
                 controller: 'ActivityController'
             }
         }
-    });
+    })
+
+    .state('tab.sponsorsType', {
+        url: '/sponsorsType',
+        views: {
+            'more': {
+                templateUrl: 'app/Sponsor/SponsorsType.html',
+                controller: 'SponsorsTypeController'
+            }
+        }
+    })
+
+    .state('tab.sponsorPlatinum', {
+        url: '/sponsorPlatinum',
+        views: {
+            'more': {
+                templateUrl: 'app/Sponsor/Sponsors.html',
+                controller: 'SponsorPlatinumController'
+            }
+        }
+    })
+        .state('tab.sponsorGold', {
+            url: '/sponsorGold',
+            views: {
+                'more': {
+                    templateUrl: 'app/Sponsor/Sponsors.html',
+                    controller: 'SponsorGoldController'
+                }
+            }
+        })
+        .state('tab.sponsorSilver', {
+            url: '/sponsorSilver',
+            views: {
+                'more': {
+                    templateUrl: 'app/Sponsor/Sponsors.html',
+                    controller: 'SponsorSilverController'
+                }
+            }
+        })
+
+
+        .state('tab.sponsorDescription', {
+            url: '/sponsor/:Type/:Id',
+            views: {
+                'more': {
+                    templateUrl: 'app/Sponsor/sponsorDescription.html',
+                    controller: 'SponsorDescriptionController'
+                }
+            }
+        })
+
+              .state('tab.homeTinder', {
+                  url: '/homeTinder',
+                  views: {
+                      'more': {
+                          templateUrl: 'app/Home/tinderHome.html',
+                          controller: 'HomeController'
+                      }
+                  }
+              });
 
 
     // if none of the above states are matched, use this as the fallback
-    $urlRouterProvider.otherwise('/tab/home');
+    $urlRouterProvider.otherwise('/splash');
+
+
+
+
 
 });
 

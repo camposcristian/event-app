@@ -1,12 +1,12 @@
-﻿<ion-view ng-controller="NotificationController" no-scroll>
+<ion-view ng-controller="NotificationController" no-scroll>
     <ion-content has-header="true" padding="true">
         <div class="list card">
             <div class="item item-avatar" style="border:0" ng-show="{{card.userId}} === 0">
-                <img src="/img/alertImg.jpg">
+                <img src="./img/alertImg.jpg">
                 <h2 style="font-weight: bold; white-space: pre-line; font-style: italic; font-family: serif; font-variant: small-caps;">{{card.title}}</h2>
             </div>
             <div class="item item-avatar" style="border:0" ng-show="{{card.userId}} !== 0">
-                <img src="/img/feedbackImg.jpg">
+                <img src="./img/feedbackImg.jpg">
                 <h2 style="font-weight: bold; white-space: pre-line; font-style: italic; font-family: serif; font-variant: small-caps;">{{card.title}}</h2>
             </div>
             <div class="item item-body activityBorder" ng-class="{notificationBorder: {{card.userId}} === 0, feedbackBorder: {{card.userId}} !== 0 }">

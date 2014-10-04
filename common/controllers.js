@@ -6,9 +6,11 @@ angular.module('aac.controllers',
         'aac.search.controller',
         'aac.schedule.controller',
         'aac.notes.controller',
+        'aac.splash.controller',
         'aac.login.controller',
         'aac.user.controller',
-        'aac.more.controller'
+        'aac.more.controller',
+        'aac.sponsor.controller'
     ])
 
 

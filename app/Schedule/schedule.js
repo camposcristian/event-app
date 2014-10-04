@@ -33,7 +33,6 @@
 
     $scope.activityClick = function () {
         var mySchedule = Store.get('MyEvents');
-
         if ($scope.event.checked) {
             mySchedule.forEach(function (entry, index) {
                 if (entry.data.id == $scope.event.data.id) {
@@ -79,7 +78,8 @@
 
 })
     // SCHEDULE CONTROLLER
-.controller('ScheduleController', function ($scope, $ionicSideMenuDelegate, $location, Events, Store, WebApiFactory) {
+.controller('ScheduleController', function ($scope, $ionicSideMenuDelegate, $location,
+    Events, Store, WebApiFactory, $cordovaCalendar, $ionicLoading) {
 
 
     $scope.pageTitle = "Cronograma";
@@ -94,6 +94,14 @@
                     mySchedule.push(entry);
                     Store.save('MyEvents', mySchedule);
                     entry.checked = !entry.checked;
+                    var event = entry.data;
+                    $cordovaCalendar.createEvent(event.title, event.location, event.description, new Date(event.dateStart), new Date(event.dateFinish),
+                        function (result) {
+                            $ionicLoading.show({ template: 'Evento agregado al calendario', noBackdrop: true, duration: 2000 });
+                        },
+                        function (err) {
+                            $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
+                        });
                 }
                 else {
                     mySchedule.forEach(function (value, index) {
@@ -258,7 +266,7 @@
         return stringTime;
     };
     $scope.getTime = function (mins) {
-        if(mins < 10)
+        if (mins < 10)
         { mins = '0' + mins; }
 
         return mins;
@@ -448,7 +456,7 @@
     }
 
 
- 
+
     //FILTERS
     $scope.matchDate = function (filterDates) {
         return function (event) {

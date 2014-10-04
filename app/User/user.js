@@ -1,19 +1,84 @@
 ﻿angular.module('aac.user.controller', [])
 
+.directive("fileread", [function () {
+    return {
+        scope: {
+            fileread: "="
+        },
+        link: function (scope, element, attributes) {
+            element.bind("change", function (changeEvent) {
+                var reader = new FileReader();
+                reader.onload = function (loadEvent) {
+                    scope.$apply(function () {
+                        scope.fileread = loadEvent.target.result;
+                    });
+                }
+                reader.readAsDataURL(changeEvent.target.files[0]);
+            });
+        }
+    }
+}])
  //EditUser Controller
-.controller('EditUserController', function ($scope, $stateParams, $window, $ionicPopup, ParticipantsLister, UserProfile) {
-    //$scope.user = ParticipantsLister.get($stateParams.Id);
-    ParticipantsLister.get($stateParams.Id).success(function (user) {
-        $scope.user = user;
+.controller('EditUserController', function ($scope, $stateParams, $window, $ionicPopup, ParticipantsLister, UserProfile, $cordovaCamera, $ionicLoading, ApiFactory) {
+    $scope.$watch('$viewContentLoaded', function () {
+
+
+        $scope.loadingIndicator = $ionicLoading.show({
+            content: 'Showing Loading Indicator!',
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            showDelay: 500
+        });
+
+        ParticipantsLister.get($stateParams.Id).success(function (user) {
+            $ionicLoading.hide();
+            $scope.user = user;
+            if ($scope.user.Image != null) {
+                $scope.ImageURI = $scope.user.Image;
+            }
+            else {
+                $scope.ImageURI = "./img/profileImage.png";
+            }
+
+
+        });
+
+        
+
+
     });
-    $scope.isProfile = UserProfile.isProfile($stateParams.Id);
-    //    function () {
-    //    UserService.isProfile($stateParams.Id);
-    //}
+
+
+    
+        $scope.uploadme = {};
+    $scope.uploadme.src = "img/profileImage.png";
+    $scope.cargarImg2 = function () {
+        takePicture2.click();
+    }
+    $scope.cargarImg = function () {
+        var options = {
+            quality: 50,
+            //destinationType: Camera.DestinationType.FILE_URI,
+            destinationType: Camera.DestinationType.DATA_URL,
+            sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+
+        };
+        $cordovaCamera.getPicture(options).then(function (imageURI) {
+            $scope.ImageURI = "data:image/jpeg;base64," + imageURI;
+        });
+    }
+    $scope.showButton = false;
+    $scope.changeShowButton = function () {
+        $scope.showButton = true;
+    }
+
+
+
     $scope.goBack = function (id) {
         $window.history.back();
-        //$location.path("/tab/more/");
     };
+
     $scope.showConfirm = function () {
         var confirmPopup = $ionicPopup.confirm({
             title: 'Editar Perfil',
@@ -21,21 +86,28 @@
         });
         confirmPopup.then(function (res) {
             if (res) {
+                $scope.loadingIndicator = $ionicLoading.show({
+                    content: 'Showing Loading Indicator!',
+                    animation: 'fade-in',
+                    showBackdrop: false,
+                    maxWidth: 200,
+                    showDelay: 500
+                });
+
+                if ($scope.ImageURI != "./img/profileImage.png") {
+                    var imagen = $scope.ImageURI;
+                    var fotoAenviar = imagen.substring(imagen.indexOf(',') + 1);
+                    ApiFactory.postPicture(fotoAenviar);
+                    $scope.user.Image = "https://aaclupersoft.blob.core.windows.net/profilepictures/" + $scope.user.Id;
+                }
+
                 ParticipantsLister.put($stateParams.Id, $scope.user).success(function (data, status, headers, config) {
+                    $ionicLoading.hide();
                     console.log('put success');
                     $window.history.back();
                 }).error(function (data, status, headers, config) {
-                    console.log('post error');
-                    console.log('data');
-                    console.log(data);
-                    console.log('status');
-                    console.log(status);
-                    console.log('headers');
-                    console.log(headers);
-                    console.log('config');
-                    console.log(config);
+                    console.log('put error');
                     
-                    //$window.history.back();
                 });
 
             } else {
@@ -43,53 +115,97 @@
             }
         });
     };
-    
 
 })
 
     //PARTICIPANT CONTROLLER
-.controller('UserController', function ($scope, $stateParams, $location, ParticipantsLister, UserProfile) {
-    //$scope.user = ParticipantsLister.get($stateParams.Id);
-    ParticipantsLister.get($stateParams.Id).success(function (user) {
-        $scope.user = user;
+.controller('UserController', function ($scope, $state, $stateParams,$cacheFactory, $location, ApiFactory, ParticipantsLister, $ionicLoading, UserProfile, $cordovaContacts) {
+    
+    $scope.$watch('$viewContentLoaded', function () {
+       
+        var $httpDefaultCache = $cacheFactory.get('$http');
+        $scope.loadingIndicator = $ionicLoading.show({
+            content: 'Showing Loading Indicator!',
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            showDelay: 500
+        });
+
+        ParticipantsLister.get($stateParams.Id).success(function (user) {
+            $ionicLoading.hide();
+            $scope.user = user;
+            $scope.profileImage = $scope.user.Image;
+            if (!!$scope.profileImage) {
+                return;
+            }
+            else {
+                $scope.profileImage = "./img/profileImage.png";
+            }
+            $scope.$apply(function () {
+                $scope.profileImage = profileImage + '?' + new Date().getTime();
+            });
+        });
+
+
     });
 
-    $scope.isProfile = UserProfile.isProfile($stateParams.Id);
-    //    function () {
-    //    UserService.isProfile($stateParams.Id);
-    //}
+
+    $scope.isQr = $stateParams.Qr || false;
+    $scope.isProfile = (localStorage["UserId"] == $stateParams.Id);
+
     $scope.goToEditUser = function (Id) {
         $location.path("/tab/editUser/" + $stateParams.Id);
     };
+    $scope.addContact = function () {
+        var properties = {
+            displayName: $scope.user.CompleteName,
+            name: { formatted: $scope.user.CompleteName, givenName: $scope.user.CompleteName },
+            phoneNumbers: [new ContactField('home', $scope.user.Tel, false)],
+            emails: [new ContactField('home', $scope.user.Email, false)]
+        }
+        $cordovaContacts.save(properties).then
+            (function (result) {
+                $ionicLoading.show({ template: 'Contacto Agregado a la Agenda', noBackdrop: true, duration: 2000 });
+                $state.go("tab.home");
+            },
+        function (err) {
+            $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
+
+        });
+    };
     $scope.getToken = function () {
         return localStorage["token"];
-        //$location.path("/tab/more/");
-    };
-
-    var i = 1;
-    $scope.isLog = false;
-
-    $scope.FunctionLog = function () {
-        if (i == 1) {
-            //ApiFactory.all('/api/UsersAPI/GetParticipants').success(function () {
-            ApiFactory.test().success(function () {
-                $scope.isLog = true;
-            }).error(function () {
-                $scope.isLog = false;
-            });
-        }
-        i = 2;
 
     };
+
 
 })
 
-.controller('ParticipantsController', function ($scope, $ionicSideMenuDelegate, $location, ParticipantsLister) {
+.controller('ParticipantsController', function ($scope, $ionicSideMenuDelegate, $location, $ionicLoading, $cacheFactory, ParticipantsLister) {
 
-    ParticipantsLister.all().success(function (participants) {
-        $scope.participants = participants;
+    $scope.$watch('$viewContentLoaded', function () {
+        
+        var $httpDefaultCache = $cacheFactory.get('$http');
+        $scope.loadingIndicator = $ionicLoading.show({
+            content: 'Showing Loading Indicator!',
+            animation: 'fade-in',
+            showBackdrop: false,
+            maxWidth: 200,
+            showDelay: 500
+        });
+
+        ParticipantsLister.all().success(function (participants) {
+            $scope.loadingIndicator.hide();
+            $scope.participants = participants;
+            $scope.participants.forEach(function (participant) {
+                if (participant.Image == null) {
+                    participant.Image = "./img/profileImage.png";
+                }
+
+            });
+        });
     });
-    //$scope.participants = ParticipantsLister.all();
 
     $scope.goToParticipant = function (id) {
         $location.path("/tab/participants/participant/" + id);
@@ -101,8 +217,12 @@
         ParticipantsLister.all().success(function (list) {
             $scope.participants = list.participantes.rows;
         });
-        //$scope.participants = ParticipantsLister.all();
+
     };
+
+
+
+
 
 
 });
@@ -114,38 +234,24 @@
 angular.module('aac.user.service', [])
 
 
-.factory('ParticipantsLister', function (BaseUrl, ApiFactory, $http) {
+.factory('ParticipantsLister', function (BaseUrl, ApiFactory, $http, $cacheFactory) {
 
     return {
         all: function () {
             return ApiFactory.all('/api/UsersAPI/GetParticipants');
-            //return $http.get(BaseUrl + '/api/UsersAPI/GetParticipants', {
-            //    // Set the Authorization header
-            //    headers: {
-            //        'Authorization': 'Bearer ' + localStorage["token"]
-            //    }
-            //})
+
         },
         get: function (Id) {
             return ApiFactory.get('/api/UsersAPI/GetUser/', Id);
-            //return $http.get(BaseUrl + '/api/UsersAPI/GetUser/' + Id, {
-            //    // Set the Authorization header
-            //    headers: {
-            //        'Authorization': 'Bearer ' + localStorage["token"]
-            //    }
-            //})
+
         },
 
         put: function (Id, User) {
-            return ApiFactory.put('/api/UsersAPI/PutUser/', Id, User);
-            //return $http.put(BaseUrl + '/api/UsersAPI/PutUser/' + Id, User
-            //    , {
-            //        headers: {
-            //            'Content-Type': "application/json; charset=utf-8",
-            //            'Authorization': 'Bearer ' + localStorage["token"]
-            //        }
-            //    }
-            //    )
+            var $httpDefaultCache = $cacheFactory.get('$http');
+            return ApiFactory.put('/api/UsersAPI/PutUser/', Id, User).success(function () {
+                $httpDefaultCache.remove("/api/UsersAPI/GetUser/");
+                $httpDefaultCache.remove("/api/UsersAPI/GetParticipants/");
+            });
         }
 
 
@@ -153,11 +259,10 @@ angular.module('aac.user.service', [])
 })
 
 .factory('UserProfile', function (ApiFactory, BaseUrl, $http) {
-    
+
     return {
         isProfile: function (Id) {
             var profileId = ApiFactory.getUserId();
-            //var profileId = 1;
             if (Id == localStorage["UserId"]) {
                 return true;
             } else {

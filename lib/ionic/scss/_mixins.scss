@@ -171,8 +171,8 @@
 // Placeholder text
 // --------------------------------------------------
 
-@mixin placeholder($color: $input-color-placeholder) {
-  &:-moz-placeholder {
+@mixin placeholder($color: $input-color-placeholder, $text-indent: 0) {
+  &::-moz-placeholder { /* Firefox 19+ */
     color: $color;
   }
   &:-ms-input-placeholder {
@@ -180,6 +180,8 @@
   }
   &::-webkit-input-placeholder {
     color: $color;
+    // Safari placeholder margin issue
+    text-indent: $text-indent;
   }
 }
 
@@ -370,7 +372,7 @@
     -moz-animation-fill-mode: $fill-mode;
          animation-fill-mode: $fill-mode;
 }
-@mixin animation-name($name) {
+@mixin animation-name($name...) {
  -webkit-animation-name: $name;
     -moz-animation-name: $name;
          animation-name: $name;
@@ -496,7 +498,7 @@
   display: flex;
 }
 
-@mixin dislay-inline-flex {
+@mixin display-inline-flex {
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -moz-inline-flex;
