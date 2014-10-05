@@ -23,13 +23,8 @@
     $scope.$watch('$viewContentLoaded', function () {
 
 
-        $scope.loadingIndicator = $ionicLoading.show({
-            content: 'Showing Loading Indicator!',
-            animation: 'fade-in',
-            showBackdrop: false,
-            maxWidth: 200,
-            showDelay: 500
-        });
+        $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 5000 });
+
 
         ParticipantsLister.get($stateParams.Id).success(function (user) {
             $ionicLoading.hide();
@@ -44,14 +39,14 @@
 
         });
 
-        
+
 
 
     });
 
 
-    
-        $scope.uploadme = {};
+
+    $scope.uploadme = {};
     $scope.uploadme.src = "img/profileImage.png";
     $scope.cargarImg2 = function () {
         takePicture2.click();
@@ -86,13 +81,7 @@
         });
         confirmPopup.then(function (res) {
             if (res) {
-                $scope.loadingIndicator = $ionicLoading.show({
-                    content: 'Showing Loading Indicator!',
-                    animation: 'fade-in',
-                    showBackdrop: false,
-                    maxWidth: 200,
-                    showDelay: 500
-                });
+                $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 5000 });
 
                 if ($scope.ImageURI != "./img/profileImage.png") {
                     var imagen = $scope.ImageURI;
@@ -103,11 +92,9 @@
 
                 ParticipantsLister.put($stateParams.Id, $scope.user).success(function (data, status, headers, config) {
                     $ionicLoading.hide();
-                    console.log('put success');
                     $window.history.back();
                 }).error(function (data, status, headers, config) {
-                    console.log('put error');
-                    
+
                 });
 
             } else {
@@ -119,18 +106,13 @@
 })
 
     //PARTICIPANT CONTROLLER
-.controller('UserController', function ($scope, $state, $stateParams,$cacheFactory, $location, ApiFactory, ParticipantsLister, $ionicLoading, UserProfile, $cordovaContacts) {
-    
+.controller('UserController', function ($scope, $state, $stateParams, $cacheFactory, $location, ApiFactory, ParticipantsLister, $ionicLoading, UserProfile, $cordovaContacts) {
+
     $scope.$watch('$viewContentLoaded', function () {
-       
+
         var $httpDefaultCache = $cacheFactory.get('$http');
-        $scope.loadingIndicator = $ionicLoading.show({
-            content: 'Showing Loading Indicator!',
-            animation: 'fade-in',
-            showBackdrop: false,
-            maxWidth: 200,
-            showDelay: 500
-        });
+        $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 5000 });
+
 
         ParticipantsLister.get($stateParams.Id).success(function (user) {
             $ionicLoading.hide();
@@ -185,18 +167,13 @@
 .controller('ParticipantsController', function ($scope, $ionicSideMenuDelegate, $location, $ionicLoading, $cacheFactory, ParticipantsLister) {
 
     $scope.$watch('$viewContentLoaded', function () {
-        
+
         var $httpDefaultCache = $cacheFactory.get('$http');
-        $scope.loadingIndicator = $ionicLoading.show({
-            content: 'Showing Loading Indicator!',
-            animation: 'fade-in',
-            showBackdrop: false,
-            maxWidth: 200,
-            showDelay: 500
-        });
+        $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 5000 });
+
 
         ParticipantsLister.all().success(function (participants) {
-            $scope.loadingIndicator.hide();
+            $ionicLoading.hide();
             $scope.participants = participants;
             $scope.participants.forEach(function (participant) {
                 if (participant.Image == null) {

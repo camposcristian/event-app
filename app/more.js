@@ -11,7 +11,6 @@
         else {
             $scope.isLog = false;
         }
-
     });
 
     $scope.goToProfile = function () {

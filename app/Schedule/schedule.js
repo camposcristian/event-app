@@ -2,7 +2,7 @@
 
     //EVENT CONTROLLER
 .controller('ActivityController', function ($scope, $stateParams, Store) {
-    $scope.getMyEvent = function () {
+    $scope.carga = function () {
         var allEvents = Store.get('AllEvents');
         var event = null;
 
@@ -21,16 +21,12 @@
                         entry.checked = true;
                 });
 
-                event = entry;
+                $scope.event = entry;
 
             }
         });
-
-        return event;
     };
-    $scope.event = $scope.getMyEvent();
-
-
+    
     $scope.activityClick = function () {
         var mySchedule = Store.get('MyEvents');
         if ($scope.event.checked) {
@@ -75,11 +71,25 @@
 
         return mins;
     };
+    $scope.getDateName = function (dateTime) {
+        var date = new Date(dateTime);
+        var day = date.getDate();
+        if (day == "03")
+            return "LUN";
+        else if (day == "04")
+            return "MAR"
+        else if (day == "05")
+            return "MIE"
+        else if (day == "06")
+            return "JUE"
+        else
+            return "LOL";
+    };
 
 })
     // SCHEDULE CONTROLLER
 .controller('ScheduleController', function ($scope, $ionicSideMenuDelegate, $location,
-    Events, Store, WebApiFactory, $cordovaCalendar, $ionicLoading) {
+     Store, WebApiFactory, $cordovaCalendar, $ionicLoading) {
 
 
     $scope.pageTitle = "Cronograma";
@@ -249,11 +259,26 @@
         return $scope.shownGroup === group;
     };
 
+
     //DATETIME PARSERS
     $scope.getDate = function (dateTime) {
         var date = new Date(dateTime);
         var stringDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
         return stringDate;
+    };
+    $scope.getDateName = function (dateTime) {
+        var date = new Date(dateTime);
+        var day = date.getDate();
+        if (day == "03")
+            return "LUN";
+        else if (day == "04")
+            return "MAR"
+        else if (day == "05")
+            return "MIE"
+        else if (day == "06")
+            return "JUE"
+        else
+            return "LOL";
     };
     $scope.getInitTime = function (dateTime) {
         var date = new Date(dateTime);
@@ -362,7 +387,20 @@
 
         return mins;
     };
-
+    $scope.getDateName = function (dateTime) {
+        var date = new Date(dateTime);
+        var day = date.getDate();
+        if (day == "03")
+            return "LUN";
+        else if (day == "04")
+            return "MAR"
+        else if (day == "05")
+            return "MIE"
+        else if (day == "06")
+            return "JUE"
+        else
+            return "LOL";
+    };
 
     //Busqueda
     $scope.searchQuery = "";
@@ -532,26 +570,4 @@
 });
 
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////
 
-angular.module('aac.schedule.service', [])
-
-.factory('Events', function () {
-    var events = [
-      { id: 0, date: '17/5/2014', initTime: '10:00', endTime: '11.30', title: 'ENTRENAMIENTO Y EVALUACION DEL CIRUJANO EN FORMACION', description: 'descripcion de la charla sobre piernas', category: 'Cirugia de piernas relleno de espacio para ver responsive', location: 'Salon P', exhibitor: [{ completeName: 'Guido Wagner' }], color: "#fff" },
-      { id: 1, date: '17/5/2014', initTime: '11:30', endTime: '12.30', title: 'Charla sobre brazos', description: 'descripcion de la charla sobre brazos', category: 'Cirugia de brazos', location: 'Salon Q', exhibitor: [{ completeName: 'Cristian Campos' }], color: "#000" },
-      { id: 2, date: '18/5/2014', initTime: '11:00', endTime: '12.30', title: 'DESAFIOS EN EL DIAGNOSTICO Y MEDICINA PERSONALIZADA EN CANCER DE PULMON: IMPACTO EN LOS REQUISITOS DE LA MUESTRA - ROL DEL CIRUJANO TORACICO', description: 'descripcion de la charla sobre dedos del pie,descripcion de la charla sobre dedos del pie,descripcion de la charla sobre dedos del pie,descripcion de la charla sobre dedos del pie,descripcion de la charla sobre dedos del pie', category: 'Cirugia de piernas', location: 'Salon R', exhibitor: [{ completeName: 'Axel Pompa' }, { completeName: 'Naomi Passarelli' }, { completeName: 'Victoria Gonzales' }], color: "#f53" },
-      { id: 3, date: '19/5/2014', initTime: '12:30', endTime: '14.00', title: 'Charla sobre cabeza', description: 'descripcion de la charla sobre cabeza', category: 'Cirugia de cabeza', location: 'Salon P', exhibitor: [{ completeName: 'Gabriel Pan Gantes' }], color: "#874" },
-      { id: 4, date: '19/5/2014', initTime: '11:00', endTime: '12.30', title: 'LA SUPERVISION Y LA EVALUACION DE LOS RESIDENTES DE CIRUGIA GENERAL:PRACTICAS ACTUALES Y DESAFIOS FUTUROS', description: 'descripcion de la charla sobre dedos del pie', category: 'Cirugia de piernas', location: 'Salon R', exhibitor: [{ completeName: 'Mariano German' }], color: "#F48" }
-    ];
-
-    return {
-        all: function () {
-            return events;
-        },
-        get: function (Id) {
-            // Simple index lookup
-            return events[Id];
-        }
-    }
-});

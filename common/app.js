@@ -257,16 +257,6 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services', 'ngCordova'])
             }
         })
 
-              .state('tab.homeTinder', {
-                  url: '/homeTinder',
-                  views: {
-                      'more': {
-                          templateUrl: 'app/Home/tinderHome.html',
-                          controller: 'HomeController'
-                      }
-                  }
-              });
-
 
     // if none of the above states are matched, use this as the fallback
     $urlRouterProvider.otherwise('/splash');

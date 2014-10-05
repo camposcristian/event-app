@@ -182,7 +182,7 @@
 
 .sliderTitle {
     font-weight: bold;
-    font-size: 11px;
+    font-size: 12px;
     float: left;
     font-style: italic;
     margin-top: 2px;
@@ -232,6 +232,8 @@
 .imgSize {
     height: auto !important;
     width: 200px !important;
+    margin-left: 24px;
+    margin-bottom: 15px;
 }
 
 
@@ -320,7 +322,7 @@
 
 .person {
     position: absolute;
-    background-color: transparent;
+    background-color: #eee;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
@@ -335,18 +337,18 @@
     .person:nth-child(2) {
         z-index: 4;
         top: 7px;
-        transform: scale(0.98);
+        -webkit-transform: scale(0.98);
     }
 
     .person:nth-child(3) {
         z-index: 3;
         top: 14px;
-        transform: scale(0.96);
+        -webkit-transform: scale(0.96);
     }
 
     .person:nth-child(n+4) {
         z-index: 2;
-        transform: scale(0.7);
+        -webkit-transform: scale(0.7);
     }
 
     .person:before {
@@ -383,17 +385,17 @@
 
 @keyframes yes {
     0% {
-        transform: scale(1) rotateZ(0deg);
+        -webkit-transform: scale(1) rotateZ(0deg);
         left: 0;
     }
 
     30% {
-        transform: scale(1.05) rotateZ(0deg);
+        -webkit-transform: scale(1.05) rotateZ(0deg);
         left: 0;
     }
 
     100% {
-        transform: rotateZ(45deg);
+        -webkit-transform: rotateZ(45deg);
         left: 400px;
     }
 }
@@ -404,23 +406,23 @@
 }
 
     .animateYes:before {
-        transform: rotateZ(-35deg);
+        -webkit-transform: rotateZ(-35deg);
         background: url(http://i.imgur.com/Zkwj970.png) no-repeat center 10px;
     }
 
 @keyframes no {
     0% {
-        transform: rotateZ(360deg);
+        -webkit-transform: rotateZ(360deg);
         right: 0;
     }
 
     30% {
-        transform: scale(1.05) rotateZ(360deg);
+        -webkit-transform: scale(1.05) rotateZ(360deg);
         right: 0;
     }
 
     100% {
-        transform: rotateZ(315deg);
+        -webkit-transform: rotateZ(315deg);
         right: 400px;
     }
 }
@@ -431,7 +433,7 @@
 }
 
     .animateNo:before {
-        transform: rotateZ(35deg);
+        -webkit-transform: rotateZ(35deg);
         background: url(http://i.imgur.com/XqQZ4KR.png) no-repeat center 10px;
     }
 
@@ -460,7 +462,7 @@
             margin: 0 auto;
             position: relative;
             top: 50%;
-            transform: translateY(-50%);
+            -webkit-transform: translateY(-50%);
             transition: all .1s;
             text-align: center;
             box-shadow: 0 1px 1px rgba(0, 0, 0, 0.05);
@@ -468,7 +470,7 @@
         }
 
             #control .button .trigger:active {
-                transform: translateY(-50%) scale(0.75);
+                -webkit-transform: translateY(-50%) scale(0.75);
                 transition: all .05s linear;
             }
 
@@ -476,7 +478,7 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                transform: translateY(-50%) translateX(-50%);
+                -webkit-transform: translateY(-50%) translateX(-50%);
                 font-family: 'ionicons';
             }
 
@@ -532,3 +534,31 @@
     #copy a {
         color: #aaa;
     }
+
+#contentHomeBody {
+    margin-left: 15px;
+}
+
+#contentHomeHeader {
+    height: 35px;
+    padding-top: 8px;
+    padding-right: 25px;
+    text-align: end;
+}
+
+.fixedBanner {
+    height: 70px;
+    width: 100%;
+    margin: 0 auto;
+    position: absolute;
+    bottom: 5px;
+    display: table;
+}
+
+.imgBanner {
+    max-width: 218px;
+    max-height: 70px;
+    margin-right: auto;
+    margin-left: auto;
+    display: table-cell;
+}

@@ -2,13 +2,7 @@
 
 .controller('LoginController', function ($scope, $rootScope, $state, $ionicPopup, AuthService, $ionicLoading) {
     $scope.submit = function (user) {
-        $ionicLoading.show({
-            content: '<i class="icon ion-loading-c"></i><br/>Cargando',
-            animation: 'fade-in',
-            showBackdrop: true,
-            maxWidth: 200,
-            showDelay: 0
-        });
+        $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 5000 });
 
         AuthService.login(user).then(function (result) {
             $ionicLoading.hide();

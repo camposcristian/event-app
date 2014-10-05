@@ -1,6 +1,5 @@
 angular.module('aac.services',
     [
-        'aac.schedule.service',
         'aac.login.service',
         'aac.user.service',
         'aac.more.service',

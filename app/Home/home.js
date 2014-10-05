@@ -1,17 +1,20 @@
 ﻿angular.module('aac.home.controller', [])
 
-.controller('HomeController', function ($scope, $state, $location, $ionicSlideBoxDelegate,$ionicLoading, $cordovaBarcodeScanner, Store, WebApiFactory) {
+.controller('NotificationController', function ($scope, $stateParams, Store) {
+    var selectedNotification;
+    var allNotifications = Store.get('Notifications');
+    allNotifications.forEach(function (notif) {
+        if (notif.id === $stateParams.Id)
+        { selectedNotification = notif; }
+    })
+    $scope.card = selectedNotification;
+})
 
-    //SLIDER
-    $scope.next = function () {
-        $ionicSlideBoxDelegate.next();
-    };
-    $scope.previous = function () {
-        $ionicSlideBoxDelegate.previous();
-    };
-    $scope.slideChanged = function () {
-        $ionicSlideBoxDelegate.update();
-    }
+.controller('HomeController', function ($scope, $state, $location, $cordovaBarcodeScanner, Store, WebApiFactory) {
+
+    $scope.pila1 = [];
+    $scope.pila2 = [];
+
     $scope.scanCode = function () {
         var id = localStorage["UserId"]
         if (id != null) {
@@ -36,14 +39,23 @@
         var allNotifications = [];
         var enabledNotifications = [];
         var removedIds = Store.get('removedIds');
+        $scope.hideData = false;
+        $scope.hasBanner = false;
+
+        var banner = Store.get('Banner');
+        if (banner.length > 0)
+        {
+            var num = Math.floor(Math.random() * banner.length)
+            $scope.bannerUrl = banner[num].bannerImg;
+            $scope.hasBanner = true;
+        }   
+
 
         WebApiFactory.all('tables/NotificationFeedback').success(function (data) {
             allNotifications = data;
         }).error(function (data, status) {
             allNotifications = Store.get('Notifications');
         }).finally(function () {
-
-
             if (allNotifications.length > 0) {
                 allNotifications.forEach(function (notif) {
                     isDeleted = false;
@@ -57,41 +69,61 @@
                     };
                 });
 
+                if (enabledNotifications.length == 0)
+                    $scope.hideData = true;
+
                 Store.remove('Notifications');
                 Store.save('Notifications', enabledNotifications);
+                $scope.pila1 = enabledNotifications;
+                var length = $scope.pila1.length;
+                if (length > 0) {
+                    $scope.card = $scope.pila1[length - 1];
             }
 
             $scope.cardTypes = enabledNotifications;
-            var slider = $ionicSlideBoxDelegate.$getByHandle('theSlider');
-            slider.update();
-
+            }
+            else {
+                $scope.hideData = true;
+            }
         });
     };
-    $scope.cardTypes = $scope.carga();
+
+    $scope.$watch('$viewContentLoaded', function () {
+        if ($scope.hideData == true) {
+            $scope.hideData = true;
+        }
+        else {
+            $scope.hideData = false;
+        }
+
+    });
 
     //BORRAR DATO
     $scope.deleteNotification = function (id) {
 
-        var slider = $ionicSlideBoxDelegate.$getByHandle('theSlider');
-        var curIndex = slider.currentIndex();
-        $scope.cardTypes.splice(curIndex, 1);
+        var removed = $scope.pila1.pop();
+
+        var notifications = []
+        notifications += $scope.pila2;
+        notifications += $scope.pila1;
+
         Store.remove('Notifications');
-        Store.save('Notifications', $scope.cardTypes);
+        Store.save('Notifications', notifications);
 
         var removedIds = Store.get('removedIds');
         Store.remove('removedIds');
-        removedIds.push(id);
+        removedIds.push(removed.id);
         Store.save('removedIds', removedIds);
 
-        $scope.cardTypes = $scope.carga();
-
-        var length = slider.slidesCount();
-
-        slider.update();
-
-        if (curIndex === (length - 1) && length > 0) {
-            slider.slide(curIndex - 1);
+        if ($scope.pila1.length === 0) {
+            if ($scope.pila2.length === 0) {
+                $scope.hideData = true;
+            }
+            else {
+                $scope.pila1.push($scope.pila2.pop())
+            }
         }
+        $scope.card = $scope.pila1[$scope.pila1.length - 1];
     }
 
     $scope.doesNotExistElements = function () {
@@ -106,49 +138,55 @@
 
         var sliced = text.slice(0, 30) + "...";
         return sliced;
-    }
+    };
     $scope.sliceDesc = function (text) {
         if (text.length < 40)
             return text;
 
         var sliced = text.slice(0, 40) + "...";
         return sliced;
-    }
-
-
-    $scope.goToNotificationDetail = function (id) {
-        $location.path("/tab/home/detail/" + id);
     };
-})
 
-.controller('NotificationController', function ($scope, $stateParams, Store) {
-    var selectedNotification;
-    var allNotifications = Store.get('Notifications');
-    allNotifications.forEach(function (notif) {
-        if (notif.id === $stateParams.Id)
-        { selectedNotification = notif; }
-    })
-    $scope.card = selectedNotification;
-})
 
-angular.module('aac.home.service', [])
+    $scope.goToNotificationDetail = function () {
+        var item = $scope.pila1.pop();
+        $scope.pila1.push(item);
+        $location.path("/tab/home/detail/" + item.id);
+    };
 
-.factory('Slider', function () {
-    var cardTypes = [
-      { id: 0, title: 'Titulo 1', description: 'Descripcion 1', priority: 1, activity: 'Actividad', speaker: 'Mariano' },
-      { id: 1, title: 'Titulo 2', description: 'Descripcion 2', priority: 3, activity: 'Actividad 2', speaker: 'Axel' },
-      { id: 2, title: 'Titulo 3', description: 'Descripcion 3', priority: 2, activity: '', speaker: 'null' },
-      { id: 3, title: 'Titulo 4', description: 'Descripcion 4', priority: 1, activity: 'Actividad 3', speaker: 'Cristian' },
-      { id: 4, title: 'Titulo 5', description: 'Descripcion 5', priority: 3, activity: '', speaker: 'null' }
-    ];
+    $scope.getImg = function () {
+        if($scope.isFeedback($scope.card.userId))
+            return "./img/feedbackImg.jpg"
+        else 
+            return "./img/alertImg.jpg"
+    }
+    $scope.isFeedback = function (bool) {
+        return bool !== 0
+    };
 
-    return {
-        all: function () {
-            return cardTypes;
-        },
-        get: function (Id) {
-            // Simple index lookup
-            return cardTypes[Id];
+    $scope.goRight = function () {
+        if ($scope.pila1.length > 1) {
+            var item = $scope.pila1.pop();
+            $scope.pila2.push(item);
+            $scope.card = $scope.pila1[$scope.pila1.length - 1];
+
+
         }
+    };
+    $scope.goLeft = function () {
+        if ($scope.pila2.length > 0) {
+            var item = $scope.pila2.pop();
+            $scope.pila1.push(item);
+            $scope.card = $scope.pila1[$scope.pila1.length - 1];
+
+        }
+    };
+    $scope.areItemsLeft = function () {
+        return $scope.pila2.length > 0;
+    }
+    $scope.areItemsRight = function () {
+        return $scope.pila1.length > 1;
     }
 });
+
+

@@ -7,8 +7,9 @@
     $httpDefaultCache.remove("tables/Activity");
     $httpDefaultCache.remove("tables/NotificationFeedback");
     var timer = $interval(function () {
+        countDown--;
         //En el loading, se podría ir poniendo "cargando notificaciones, cargando actividades, etc"
-        $ionicLoading.show({ template:'<i class="icon ion-loading-c"></i><br/>'+countDown--, noBackdrop: false, duration: 6000 });
+        $ionicLoading.show({ template:'<i class="icon ion-loading-c"></i><br/>Sincronizando', noBackdrop: false, duration: 3000 });
         if (countDown < 0) {
             $ionicLoading.hide();
             $state.go('tab.home');

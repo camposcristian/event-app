@@ -29,13 +29,9 @@
 
         sponsors.forEach(function (sponsor) {
             if (sponsor.id === $stateParams.Id)
-                selectedSponsor = sponsor;
+                $scope.sponsor = sponsor;
         })
-
-        return selectedSponsor;
     };
-
-    $scope.sponsor = $scope.carga();
 })
 
 .controller('SponsorsTypeController', function ($scope, Store, WebApiFactory) {
@@ -47,6 +43,7 @@
         var gold = [];
         var silver = [];
         var platinum = [];
+        var banner = [];
 
 
         WebApiFactory.all('tables/Sponsor').success(function (allSponsors) {
@@ -57,8 +54,10 @@
                        platinum.push(sponsor)
                    else if (sponsor.type === "Oro")
                        gold.push(sponsor)
-                   else 
+                   else if (sponsor.type === "Plata")
                        silver.push(sponsor)
+                   else
+                       banner.push(sponsor)
                  });
            };
 
@@ -75,6 +74,11 @@
                Store.remove('SponsorsSilver');
                Store.save('SponsorsSilver', silver);
            }
+           if (banner.length > 0) {
+               Store.remove('Banner');
+               Store.save('Banner', banner);
+           }
+
         });
     };
 
