@@ -1,4 +1,4 @@
-﻿<ion-view title="Inicio" ng-controller="HomeController" ng-init="carga()" no-scroll>
+<ion-view title="Inicio" ng-controller="HomeController" ng-init="carga()" no-scroll>
     <ion-nav-buttons side="right">
         <a ng-click="scanCode()" class="button button-icon icon ion-camera color-white "></a>
     </ion-nav-buttons>
@@ -36,7 +36,7 @@
                     <div class="button no" ng-click="goLeft()" ng-show="areItemsLeft()">
                         <a class="trigger"></a>
                     </div>
-                    <div class="button info" ng-click="goToNotificationDetail()">
+                    <div class="button info" ng-click="goToNotificationDetail()" ng-show="hideData">
                         <a class="trigger"></a>
                     </div>
                     <div class="button yes" ng-click="goRight()" ng-show="areItemsRight()">

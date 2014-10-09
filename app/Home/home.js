@@ -12,6 +12,16 @@
 
 .controller('HomeController', function ($scope, $state, $location, $cordovaBarcodeScanner, Store, WebApiFactory) {
 
+    $scope.$watch('$viewContentLoaded', function () {
+        if ($scope.hideData == true) {
+            $scope.hideData = true;
+        }
+        else {
+            $scope.hideData = false;
+        }
+
+    });
+
     $scope.pila1 = [];
     $scope.pila2 = [];
 
@@ -39,7 +49,7 @@
         var allNotifications = [];
         var enabledNotifications = [];
         var removedIds = Store.get('removedIds');
-        $scope.hideData = false;
+        $scope.hideData = true;
         $scope.hasBanner = false;
 
         var banner = Store.get('Banner');
@@ -69,8 +79,8 @@
                     };
                 });
 
-                if (enabledNotifications.length == 0)
-                    $scope.hideData = true;
+                if (enabledNotifications.length > 0)
+                    $scope.hideData = false;
 
                 Store.remove('Notifications');
                 Store.save('Notifications', enabledNotifications);
@@ -82,21 +92,9 @@
 
             $scope.cardTypes = enabledNotifications;
             }
-            else {
-                $scope.hideData = true;
-            }
         });
     };
 
-    $scope.$watch('$viewContentLoaded', function () {
-        if ($scope.hideData == true) {
-            $scope.hideData = true;
-        }
-        else {
-            $scope.hideData = false;
-        }
-
-    });
 
     //BORRAR DATO
     $scope.deleteNotification = function (id) {
