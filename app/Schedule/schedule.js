@@ -2,7 +2,6 @@
 
     //EVENT CONTROLLER
 .controller('ActivityController', function ($scope, $stateParams, Store) {
-    $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 500 });
 
     $scope.carga = function () {
         var allEvents = Store.get('AllEvents');
@@ -92,7 +91,6 @@
     // SCHEDULE CONTROLLER
 .controller('ScheduleController', function ($scope, $ionicSideMenuDelegate, $location,
      Store, WebApiFactory, $cordovaCalendar, $ionicLoading) {
-    $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 500 });
 
 
     $scope.pageTitle = "Cronograma";
