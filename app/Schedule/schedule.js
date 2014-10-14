@@ -2,6 +2,8 @@
 
     //EVENT CONTROLLER
 .controller('ActivityController', function ($scope, $stateParams, Store) {
+    $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 500 });
+
     $scope.carga = function () {
         var allEvents = Store.get('AllEvents');
         var event = null;
@@ -26,7 +28,7 @@
             }
         });
     };
-    
+
     $scope.activityClick = function () {
         var mySchedule = Store.get('MyEvents');
         if ($scope.event.checked) {
@@ -90,10 +92,49 @@
     // SCHEDULE CONTROLLER
 .controller('ScheduleController', function ($scope, $ionicSideMenuDelegate, $location,
      Store, WebApiFactory, $cordovaCalendar, $ionicLoading) {
+    $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 500 });
 
 
     $scope.pageTitle = "Cronograma";
     $scope.icon = "ion-android-checkmark";
+    
+    //DATETIME PARSERS
+    $scope.getDate = function (dateTime) {
+        var date = new Date(dateTime);
+        var stringDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+        return stringDate;
+    };
+    $scope.getDateName = function (dateTime) {
+        var date = new Date(dateTime);
+        var day = date.getDate();
+        if (day == "03")
+            return "LUN";
+        else if (day == "04")
+            return "MAR"
+        else if (day == "05")
+            return "MIE"
+        else if (day == "06")
+            return "JUE"
+        else
+            return "LOL";
+    };
+    $scope.getInitTime = function (dateTime) {
+        var date = new Date(dateTime);
+        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
+        return stringTime;
+    };
+    $scope.getEndTime = function (dateTime) {
+        var date = new Date(dateTime);
+        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
+        return stringTime;
+    };
+    $scope.getTime = function (mins) {
+        if (mins < 10)
+        { mins = '0' + mins; }
+
+        return mins;
+    };
+
 
     //AL HACER CLICK EN EL CHECK, GUARDAR EN LOCAL EL EVENTO QUE ASISTIRA
     $scope.activityClick = function (id) {
@@ -202,47 +243,48 @@
     }
 
     //Carga de eventos inicial
+    //COMENTADO PARA HACER PULL AND REFRESH EN EL FUTURO
     $scope.carga = function () {
 
         var allEvents = [];
         var filter = { datesFilter: [], categoriesFilter: [], locationsFilter: [] };
-        WebApiFactory.all('tables/Activity').success(function (activities) {
-            var data = activities;
-            data.forEach(function (entry) {
-                allEvents.push({ data: entry, checked: false })
-            });
-        }).error(function (data, status) {
-            allEvents = Store.get('AllEvents');
-        }).finally(function () {
+        //WebApiFactory.all('tables/Activity').success(function (activities) {
+        //    var data = activities;
+        //    data.forEach(function (entry) {
+        //        allEvents.push({ data: entry, checked: false })
+        //    });
+        //}).error(function (data, status) {
+        allEvents = Store.get('AllEvents');
+        //}).finally(function () {
 
+        var myEvents = Store.get('MyEvents');
+        var ids = [];
+        myEvents.forEach(function (entry) {
+            ids.push(entry.data.id);
+        });;
 
-            var myEvents = Store.get('MyEvents');
-            var ids = [];
-            myEvents.forEach(function (entry) {
-                ids.push(entry.data.id);
-            });;
-
-            allEvents.forEach(function (value) {
-                value.checked = false;
-                ids.forEach(function (val) {
-                    if (val == value.data.id)
-                        value.checked = true;
-                });
-
-                filter = $scope.loadFilterMenu(value, filter);
+        allEvents.forEach(function (value) {
+            value.checked = false;
+            ids.forEach(function (val) {
+                if (val == value.data.id)
+                    value.checked = true;
             });
 
-            Store.remove('AllEvents');
-            Store.save('AllEvents', allEvents);
-
-            $scope.filterDates = filter.datesFilter;
-            $scope.filterCategories = filter.categoriesFilter;
-            $scope.filterLocation = filter.locationsFilter;
-
-            $scope.events = allEvents;
+            filter = $scope.loadFilterMenu(value, filter);
         });
+
+        Store.remove('AllEvents');
+        Store.save('AllEvents', allEvents);
+
+        $scope.filterDates = filter.datesFilter;
+        $scope.filterCategories = filter.categoriesFilter;
+        $scope.filterLocation = filter.locationsFilter;
+
+        $scope.events = allEvents;
+        //});
     };
-    $scope.events = $scope.carga();
+
+    $scope.carga();
 
     ///SIDE MENU
     $scope.toggleRight = function () {
@@ -259,43 +301,6 @@
         return $scope.shownGroup === group;
     };
 
-
-    //DATETIME PARSERS
-    $scope.getDate = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-        return stringDate;
-    };
-    $scope.getDateName = function (dateTime) {
-        var date = new Date(dateTime);
-        var day = date.getDate();
-        if (day == "03")
-            return "LUN";
-        else if (day == "04")
-            return "MAR"
-        else if (day == "05")
-            return "MIE"
-        else if (day == "06")
-            return "JUE"
-        else
-            return "LOL";
-    };
-    $scope.getInitTime = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
-        return stringTime;
-    };
-    $scope.getEndTime = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
-        return stringTime;
-    };
-    $scope.getTime = function (mins) {
-        if (mins < 10)
-        { mins = '0' + mins; }
-
-        return mins;
-    };
 
     //FILTERS
     $scope.matchDate = function (filterDates) {

@@ -10,7 +10,7 @@
     $scope.card = selectedNotification;
 })
 
-.controller('HomeController', function ($scope, $state, $location, $cordovaBarcodeScanner, Store, WebApiFactory) {
+.controller('HomeController', function ($scope, $state, $location, $cordovaBarcodeScanner, Store, WebApiFactory, $ionicLoading) {
 
     $scope.$watch('$viewContentLoaded', function () {
         if ($scope.hideData == true) {
@@ -53,46 +53,44 @@
         $scope.hasBanner = false;
 
         var banner = Store.get('Banner');
-        if (banner.length > 0)
-        {
+        if (banner.length > 0) {
             var num = Math.floor(Math.random() * banner.length)
             $scope.bannerUrl = banner[num].bannerImg;
             $scope.hasBanner = true;
-        }   
-
-
-        WebApiFactory.all('tables/NotificationFeedback').success(function (data) {
-            allNotifications = data;
-        }).error(function (data, status) {
-            allNotifications = Store.get('Notifications');
-        }).finally(function () {
-            if (allNotifications.length > 0) {
-                allNotifications.forEach(function (notif) {
-                    isDeleted = false;
-                    removedIds.forEach(function (id) {
-                        if (id.toString() === notif.id) {
-                            isDeleted = true;
-                        }
+        }
+        WebApiFactory.all('tables/NotificationFeedback')
+            .success(function (data) {
+                allNotifications = data;
+            })
+            .error(function (data, status) {
+                allNotifications = Store.get('Notifications');
+            }).finally(function () {
+                if (allNotifications.length > 0) {
+                    allNotifications.forEach(function (notif) {
+                        isDeleted = false;
+                        removedIds.forEach(function (id) {
+                            if (id.toString() === notif.id) {
+                                isDeleted = true;
+                            }
+                        });
+                        if (!isDeleted) {
+                            enabledNotifications.push(notif)
+                        };
                     });
-                    if (!isDeleted) {
-                        enabledNotifications.push(notif)
-                    };
-                });
 
-                if (enabledNotifications.length > 0)
-                    $scope.hideData = false;
+                    if (enabledNotifications.length > 0)
+                        $scope.hideData = false;
 
-                Store.remove('Notifications');
-                Store.save('Notifications', enabledNotifications);
-                $scope.pila1 = enabledNotifications;
-                var length = $scope.pila1.length;
-                if (length > 0) {
-                    $scope.card = $scope.pila1[length - 1];
-            }
-
-            $scope.cardTypes = enabledNotifications;
-            }
-        });
+                    Store.remove('Notifications');
+                    Store.save('Notifications', enabledNotifications);
+                    $scope.pila1 = enabledNotifications;
+                    var length = $scope.pila1.length;
+                    if (length > 0) {
+                        $scope.card = $scope.pila1[length - 1];
+                    }
+                    $scope.cardTypes = enabledNotifications;
+                }
+            });
     };
 
 
@@ -153,9 +151,9 @@
     };
 
     $scope.getImg = function () {
-        if($scope.isFeedback($scope.card.userId))
+        if ($scope.isFeedback($scope.card.userId))
             return "./img/feedbackImg.jpg"
-        else 
+        else
             return "./img/alertImg.jpg"
     }
     $scope.isFeedback = function (bool) {
@@ -167,8 +165,6 @@
             var item = $scope.pila1.pop();
             $scope.pila2.push(item);
             $scope.card = $scope.pila1[$scope.pila1.length - 1];
-
-
         }
     };
     $scope.goLeft = function () {

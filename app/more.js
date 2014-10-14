@@ -1,8 +1,9 @@
 ﻿angular.module('aac.more.controller', [])
 
 
-.controller('MoreController', function ($scope, $window, $location,$state, ApiFactory, UserProfile, Store) {
+.controller('MoreController', function ($scope, $window, $location,$state, ApiFactory,WebApiFactory, UserProfile, Store) {
     $scope.isLog = false;
+    $scope.updates = false;
 
     $scope.$watch('$viewContentLoaded', function () {
         if (localStorage["token"] != null) {
@@ -11,6 +12,10 @@
         else {
             $scope.isLog = false;
         }
+        WebApiFactory.all('tables/NotificationFeedback?__systemproperties=__updatedAt').success(function (data) {
+            var lastDate = Store.get('lastSync');
+            $scope.updates = (data[0].__updatedAt > lastDate);
+        });
     });
 
     $scope.goToProfile = function () {

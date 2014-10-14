@@ -2,7 +2,7 @@
 
 .controller('LoginController', function ($scope, $rootScope, $state, $ionicPopup, AuthService, $ionicLoading) {
     $scope.submit = function (user) {
-        $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false, duration: 5000 });
+        $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Cargando', noBackdrop: false });
 
         AuthService.login(user).then(function (result) {
             $ionicLoading.hide();
@@ -11,7 +11,7 @@
             }
             $state.transitionTo("tab.more");
         }, function (error) {
-            $scope.loadingIndicator.hide();
+            $ionicLoading.hide();
             var alertPopup = $ionicPopup.alert({
                 title: 'ERROR DE LOGIN',
                 template: 'Usuario y/o contraseña invalidos'
