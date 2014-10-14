@@ -1,1 +1,6 @@
 AAC_iTunes_Store.mobileprovision
+App_Data/PublishProfiles/aacmobile.pubxml
+README.md
+Web.config
+packages.config
+website.publishproj
