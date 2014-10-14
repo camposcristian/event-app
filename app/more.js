@@ -5,6 +5,10 @@
     $scope.isLog = false;
     $scope.updates = false;
 
+    $scope.gotoTW = function () {
+        window.open("https://twitter.com/hashtag/AAC85?src=hash", '_system');
+    }
+
     $scope.$watch('$viewContentLoaded', function () {
         if (localStorage["token"] != null) {
             $scope.isLog = true;

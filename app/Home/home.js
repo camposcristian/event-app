@@ -29,8 +29,12 @@
         var id = localStorage["UserId"]
         if (id != null) {
             $cordovaBarcodeScanner.scan().then(function (imageData) {
-                $state.go("tab.participant", { Id: imageData.text, Qr: true });
-
+                if (imageData.text) {
+                    $state.go("tab.participant", { Id: imageData.text, Qr: true });
+                }
+                else {
+                    $state.go("tab.more");
+                }
             }, function (err) {
                 $ionicLoading.show({ template: err, noBackdrop: true, duration: 1000 });
                 $state.go("tab.home");
