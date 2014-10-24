@@ -37,7 +37,6 @@
                     Store.remove('MyEvents');
                     Store.save('MyEvents', mySchedule);
                 }
-
             });
         }
         else {
@@ -75,7 +74,11 @@
     $scope.getDateName = function (dateTime) {
         var date = new Date(dateTime);
         var day = date.getDate();
-        if (day == "03")
+        if (day == "01")
+            return "SAB";
+        else if (day == "02")
+            return "DOM";
+        else if (day == "03")
             return "LUN";
         else if (day == "04")
             return "MAR"
@@ -86,6 +89,7 @@
         else
             return "LOL";
     };
+
 
 })
     // SCHEDULE CONTROLLER
@@ -95,7 +99,7 @@
 
     $scope.pageTitle = "Cronograma";
     $scope.icon = "ion-android-checkmark";
-    
+
     //DATETIME PARSERS
     $scope.getDate = function (dateTime) {
         var date = new Date(dateTime);
@@ -105,7 +109,11 @@
     $scope.getDateName = function (dateTime) {
         var date = new Date(dateTime);
         var day = date.getDate();
-        if (day == "03")
+        if (day == "01")
+            return "SAB";
+        else if (day == "02")
+            return "DOM";
+        else if (day == "03")
             return "LUN";
         else if (day == "04")
             return "MAR"
@@ -116,6 +124,7 @@
         else
             return "LOL";
     };
+
     $scope.getInitTime = function (dateTime) {
         var date = new Date(dateTime);
         var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
@@ -358,7 +367,7 @@
 
 })
     //MY SCHEDULE CONTROLLER
-.controller('MyScheduleController', function ($scope, $ionicSideMenuDelegate, $location, Store) {
+.controller('MyScheduleController', function ($scope, $ionicSideMenuDelegate, $location, Store,$ionicLoading) {
 
     $scope.pageTitle = "Agenda";
     $scope.icon = "ion-android-alarm";
@@ -366,6 +375,7 @@
 
     //AL HACER CLICK EN EL RELOJ, CONFIGURAR ALARMA
     $scope.activityClick = function (id) {
+        $ionicLoading.show({ template: 'Opción no disponible', noBackdrop: true, duration: 2000 });
     };
 
     //DATETIME PARSERS
@@ -393,7 +403,11 @@
     $scope.getDateName = function (dateTime) {
         var date = new Date(dateTime);
         var day = date.getDate();
-        if (day == "03")
+        if (day == "01")
+            return "SAB";
+        else if (day == "02")
+            return "DOM";
+        else if (day == "03")
             return "LUN";
         else if (day == "04")
             return "MAR"

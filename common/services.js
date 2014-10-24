@@ -43,9 +43,9 @@ angular.module('aac.services',
                 // Set the Authorization header
                 cache: true,
                 headers: {
-                    
                     'Authorization': 'Bearer ' + localStorage["token"]
-                }
+                },
+                timeout: 6000
             })
         },
         get: function (Action, Id) {

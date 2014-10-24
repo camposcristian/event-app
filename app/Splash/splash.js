@@ -21,7 +21,7 @@
         }).error(function (data, status) {
             $ionicLoading.show({ template: 'Error de conexión', noBackdrop: false });
         }).finally(function () {
-            $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Sincronizando Notificaciones', noBackdrop: false });
+            $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Sincronizando Sponsors', noBackdrop: false });
             WebApiFactory.all('tables/Sponsor')
                 .success(function (allSponsors) {
                     var gold = [];
@@ -61,6 +61,7 @@
 
                 })
             .finally(function () {
+                $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Sincronizando Notificaciones', noBackdrop: false });
                 WebApiFactory.all('tables/NotificationFeedback')
                     .success(function (data) {
                         var allNotifications = [];

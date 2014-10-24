@@ -6,7 +6,7 @@
     $scope.updates = false;
 
     $scope.gotoTW = function () {
-        window.open("https://twitter.com/hashtag/AAC85?src=hash", '_system');
+        window.open("https://twitter.com/hashtag/85CAC?src=hash", '_system');
     }
 
     $scope.$watch('$viewContentLoaded', function () {

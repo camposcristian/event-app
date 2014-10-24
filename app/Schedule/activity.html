@@ -3,13 +3,13 @@
 
         <div class="list card">
             <div class="item" style="padding: 5px 0 7px 10px; border:none;">
-                <h2 style="font-weight: bold; white-space: pre-line; font-style: italic; font-family: serif; font-variant: small-caps;">{{event.data.title}}</h2>
+                <h2 style="font-weight: bold; white-space: pre-line; font-variant: small-caps;">{{event.data.title}}</h2>
             </div>
-            <div class="item item-body activityBorder" style="margin-top: 15px; border-color:{{event.data.categoryColor}};">
+            <div class="item item-body activityBorder" style="margin-top: 15px; border-color:{{event.data.categoryColor}}">
                 <h4 style="margin-top: 5px;"><i class="icon ion-calendar" style="margin-right:5px;"></i>{{getDateName(event.data.dateStart)}}  {{getDate(event.data.dateStart)}}  -  {{getInitTime(event.data.dateStart)}} a {{getEndTime(event.data.dateFinish)}}</h4>
                 <h4 style="margin-top: 10px; white-space: pre-line;"><i class="icon ion-pricetag" style="margin-right:5px;"></i>{{event.data.categoryName}}</h4>
                 <h4 style="margin-top: 10px; white-space: pre-line; "><i class="icon ion-location" style="margin-right:9px;"></i>{{event.data.location}}</h4>
-                <p style="font-family: cursive; font-style: italic;">
+                <p>
                     {{event.data.description}}
                 </p>
                 <div class="row" style="padding-top: 0; padding-left: 0; margin-top:15px;">
