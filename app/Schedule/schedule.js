@@ -1,7 +1,7 @@
 ﻿angular.module('aac.schedule.controller', [])
 
     //EVENT CONTROLLER
-.controller('ActivityController', function ($scope, $stateParams, Store) {
+.controller('ActivityController', function ($scope, $stateParams, Store, $ionicLoading, $cordovaCalendar) {
 
     $scope.carga = function () {
         var allEvents = Store.get('AllEvents');
@@ -30,23 +30,29 @@
 
     $scope.activityClick = function () {
         var mySchedule = Store.get('MyEvents');
-        if ($scope.event.checked) {
-            mySchedule.forEach(function (entry, index) {
-                if (entry.data.id == $scope.event.data.id) {
-                    mySchedule.splice(index, 1);
+        $scope.events.forEach(function (entry) {
+            if (entry.data.id == id) {
+                if (!entry.checked) {
+                    mySchedule.push(entry);
+                    Store.save('MyEvents', mySchedule);
+                    entry.checked = !entry.checked;
+                    var event = entry.data;
+                    $cordovaCalendar.createEvent(event.title, event.location, event.description, new Date(event.dateStart), new Date(event.dateFinish),
+                        function (result) {
+                            $ionicLoading.show({ template: 'Evento agregado al calendario', noBackdrop: true, duration: 2000 });
+                        },
+                        function (err) {
+                            $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
+                        });
+                }
+                else {
+                    mySchedule.push($scope.event);
                     Store.remove('MyEvents');
                     Store.save('MyEvents', mySchedule);
                 }
-            });
-        }
-        else {
-            mySchedule.push($scope.event);
-            Store.remove('MyEvents');
-            Store.save('MyEvents', mySchedule);
-        }
-
-        $scope.event.checked = !$scope.event.checked;
-
+            }
+            $scope.event.checked = !$scope.event.checked;
+        });
     };
 
     //DATETIME PARSERS
@@ -57,12 +63,12 @@
     };
     $scope.getInitTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getEndTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getTime = function (mins) {
@@ -127,12 +133,12 @@
 
     $scope.getInitTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getEndTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getTime = function (mins) {
@@ -367,7 +373,7 @@
 
 })
     //MY SCHEDULE CONTROLLER
-.controller('MyScheduleController', function ($scope, $ionicSideMenuDelegate, $location, Store,$ionicLoading) {
+.controller('MyScheduleController', function ($scope, $ionicSideMenuDelegate, $location, Store, $ionicLoading) {
 
     $scope.pageTitle = "Agenda";
     $scope.icon = "ion-android-alarm";
@@ -386,12 +392,12 @@
     };
     $scope.getInitTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getEndTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getTime = function (mins) {
