@@ -22,7 +22,7 @@
                 </div>
                 <div>
                     <ion-list>
-                        <ion-item ng-repeat="event in events | filter: searchQuery | filter: matchDate(filterDates) | filter: matchCategory(filterCategories) | filter: matchLocation(filterLocation)" class="scheduleEventPadding">
+                        <ion-item ng-repeat="event in events | filter: searchQuery | filter: matchDate(filterDates) | filter: matchCategory(filterCategories) | filter: matchLocation(filterLocation) | limitTo: limit" collection-item-height="75" collection-item-width="getItemWidth(event)" class="scheduleEventPadding">
                             <div class="row" style="padding:0; height:75px;">
                                 <div class="col-80" style="width:80%;">
                                     <div class="row">
@@ -31,8 +31,8 @@
                                             <div style="font-size: 10px; width: 100%; text-align: center;">{{getDate(event.data.dateStart)}}</div>
                                             <div style="font-size: 9px; width: 100%; text-align: center;">{{getInitTime(event.data.dateStart)}} - {{getEndTime(event.data.dateFinish)}}</div>
                                         </div>
-                                        <div class="col-75" style="padding-left: 10px; width:75%; cursor:pointer; border-left: 5px solid {{event.data.categoryColor}};" ng-click="goToEvent({{event.data.id}})">
-                                            <h5 style=" white-space:pre; font-weight:bold;">{{slice(event.data.title)}}</h5>
+                                        <div class="col-75" style="padding-left: 10px; width:75%; cursor:pointer; border-left: 5px solid {{event.data.categoryColor}}" ng-click="goToEvent({{event.data.id}})">
+                                            <h5 style="font-weight:bold;">{{slice(event.data.title)}}</h5>
                                             <h6><i class="icon ion-pricetag" style="margin-right: 5px;"></i>{{event.data.categoryName}}</h6>
                                             <h6 style="margin-bottom: -3px;"><i class="icon ion-location" style="margin-right: 9px;"></i>{{event.data.location}}</h6>
                                             <div class="row" style="padding-top: 0; padding-left: 0;">
@@ -48,7 +48,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-20" style="border-left: 1px dashed grey;">
+                                <div class="col-20" style="border-left: 1px dashed grey; width:20%;">
                                     <a class="button button-icon icon {{icon}}" ng-click="activityClick({{event.data.id}})" ng-class="{positive: event.checked}" style="width: 100%;"></a>
                                 </div>
                             </div>
@@ -75,11 +75,40 @@
                                       ng-model="item.checked"
                                       ng-checked="item.checked"
                                       ng-show="isGroupShown(group)" style="font-size:10px;">
-                           {{item.name}} 
+                            {{item.name}}
                         </ion-checkbox>
                     </div>
                 </ion-list>
 
+                <ion-item class="item-stable"
+                          ng-click="toggleGroup(limitation)"
+                          ng-class="{active: isGroupShown(limitation)}" style="font-weight: bold; font-size: 14px; padding:10px;">
+                    <i class="icon" ng-class="isGroupShown(limitation) ? 'ion-minus' : 'ion-plus'"></i>
+                    &nbsp;
+                    Limite
+                </ion-item>
+                <div class="list">
+                    <label class="item item-radio" ng-show="isGroupShown(limitation)">
+                        <input type="radio" name="group" ng-click="limitto(20)" checked="checked">
+                        <div class="item-content">
+                            20
+                        </div>
+                        <i class="radio-icon ion-checkmark"></i>
+                    </label>
+                    <label class="item item-radio" ng-show="isGroupShown(limitation)">
+                        <input type="radio" name="group" ng-click="limitto(50)">
+                        <div class="item-content">
+                            50
+                        </div>
+                        <i class="radio-icon ion-checkmark"></i>
+                    </label>
+                    <label class="item item-radio" ng-show="isGroupShown(limitation)">
+                        <input type="radio" name="group" ng-click="limitto(150)">
+                        <div class="item-content">
+                            150
+                        </div>
+                        <i class="radio-icon ion-checkmark"></i>
+                    </label>
         </ion-side-menu>
     </ion-side-menus>
 </ion-view>

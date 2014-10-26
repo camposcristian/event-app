@@ -21,7 +21,7 @@
 
             <div class="list">
 
-                <a ng-repeat="participant in participants | filter: searchQuery" ng-click="goToParticipant({{participant.Id}})" class=" item item-avatar">
+                <a ng-repeat="participant in participants | filter: searchQuery | limitTo: 20" ng-click="goToParticipant({{participant.Id}})" class=" item item-avatar">
                     <!--href="#"-->
                     <!--                <img src="./img/profileImage.png">-->
                     <img ng-src="{{participant.Image}}">

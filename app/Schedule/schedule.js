@@ -1,7 +1,7 @@
 ﻿angular.module('aac.schedule.controller', [])
 
     //EVENT CONTROLLER
-.controller('ActivityController', function ($scope, $stateParams, Store, $ionicLoading, $cordovaCalendar) {
+.controller('ActivityController', function ($scope, $stateParams, Store, $ionicLoading, $cordovaCalendar, $state) {
 
     $scope.carga = function () {
         var allEvents = Store.get('AllEvents');
@@ -30,29 +30,27 @@
 
     $scope.activityClick = function () {
         var mySchedule = Store.get('MyEvents');
-        $scope.events.forEach(function (entry) {
-            if (entry.data.id == id) {
-                if (!entry.checked) {
-                    mySchedule.push(entry);
-                    Store.save('MyEvents', mySchedule);
-                    entry.checked = !entry.checked;
-                    var event = entry.data;
-                    $cordovaCalendar.createEvent(event.title, event.location, event.description, new Date(event.dateStart), new Date(event.dateFinish),
-                        function (result) {
-                            $ionicLoading.show({ template: 'Evento agregado al calendario', noBackdrop: true, duration: 2000 });
-                        },
-                        function (err) {
-                            $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
-                        });
-                }
-                else {
-                    mySchedule.push($scope.event);
-                    Store.remove('MyEvents');
-                    Store.save('MyEvents', mySchedule);
-                }
-            }
-            $scope.event.checked = !$scope.event.checked;
-        });
+        var entry = $scope.event;
+        if (!entry.checked) {
+            mySchedule.push(entry);
+            Store.save('MyEvents', mySchedule);
+            entry.checked = !entry.checked;
+            var event = entry.data;
+            $cordovaCalendar.createEvent(event.title, event.location, event.description, new Date(event.dateStart), new Date(event.dateFinish),
+                function (result) {
+                    $ionicLoading.show({ template: 'Evento agregado al calendario', noBackdrop: true, duration: 2000 });
+                    $state.go("tab.home");
+                },
+                function (err) {
+                    $ionicLoading.show({ template: err, noBackdrop: true, duration: 2000 });
+                });
+        }
+        else {
+            mySchedule.push($scope.event);
+            Store.remove('MyEvents');
+            Store.save('MyEvents', mySchedule);
+        }
+        $scope.event.checked = !$scope.event.checked;
     };
 
     //DATETIME PARSERS
@@ -102,6 +100,10 @@
 .controller('ScheduleController', function ($scope, $ionicSideMenuDelegate, $location,
      Store, WebApiFactory, $cordovaCalendar, $ionicLoading) {
 
+    $scope.getItemWidth = function (item) {
+        return '80%';
+    };
+    $scope.shownGroup = null;
 
     $scope.pageTitle = "Cronograma";
     $scope.icon = "ion-android-checkmark";
@@ -194,14 +196,17 @@
     //Busqueda
     $scope.searchQuery = "";
     $scope.showSearchBox = false;
-
+    $scope.limitto = function (number) {
+        $scope.limit = number;
+    };
     //Carga de filtros lateral
     $scope.filterGroups = [{ name: 'Fecha' }, { name: 'Categoria' }, { name: 'Salon' }];
     $scope.loadFilterMenu = function (value, filter) {
         var dateAlreadyExists = false;
         var locationAlreadyExists = false;
         var categoryAlreadyExists = false;
-
+        var mostCloseDate;
+        var actualDate = new Date();
         //Dates
         filter.datesFilter.forEach(function (dateFilter) {
             if (dateFilter.name == $scope.getDate(value.data.dateStart)) {
@@ -288,12 +293,16 @@
 
         Store.remove('AllEvents');
         Store.save('AllEvents', allEvents);
-
+        filter.datesFilter[4].checked = true;
         $scope.filterDates = filter.datesFilter;
         $scope.filterCategories = filter.categoriesFilter;
         $scope.filterLocation = filter.locationsFilter;
 
         $scope.events = allEvents;
+        $scope.limit = 20;
+
+        $ionicLoading.hide();
+
         //});
     };
 
