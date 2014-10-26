@@ -20,10 +20,9 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services', 'ngCordova'])
         }
     });
 })
-.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $compileProvider,$locationProvider) {
+.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|blob|cdvfile|content):|data:image\//);
-	$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|tel|x-wmapp0):/);
-	$locationProvider.html5Mode(false);
+
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
 
 
