@@ -1,6 +1,6 @@
 ﻿angular.module('aac.notes.controller', [])
 
-.controller('NotesController', function ($scope, $state, $ionicModal, Store) {
+.controller('NotesController', function ($scope, $state, $ionicModal, Store, $ionicPopup) {
 
     //BORRAR EL LOCAL STORAGE
     //Store.clearAll();
@@ -13,16 +13,25 @@
 
     $scope.showModal = function (index) {
         $scope.indexToDelete = index;
-        $scope.modal.show();
-    }
+        var confirmPopup = $ionicPopup.confirm({
+            title: 'Borrar nota',
+            template: 'Está seguro que desea borrar esta nota?'
+        });
+        confirmPopup.then(function (res) {
+            if (res) {
+                $scope.deleteNote();
+            }
+            else {
+            }
+        });
+    };
 
-    $ionicModal.fromTemplateUrl('modalDelete.html', function (modal) {
-        $scope.modal = modal;
-    }, {
-        animation: 'slide-in-up',
-        focusFirstInput: true,
-        scope: $scope
-    });
+    $scope.deleteNote = function () {
+        $scope.notes.splice($scope.indexToDelete, 1);
+        Store.save('Notas', $scope.notes);
+        $scope.hideModal();
+        $state.transitionTo("tab.notes");
+    }
 
 })
 
@@ -47,19 +56,4 @@
 
 })
 
-.controller('ModalController', function ($scope, $state, Store) {
-
-
-    $scope.hideModal = function () {
-        $scope.modal.hide();
-        $state.transitionTo("tab.notes");
-    }
-
-    $scope.deleteNote = function () {
-        $scope.notes.splice($scope.indexToDelete, 1); 
-        Store.save('Notas', $scope.notes);
-        $scope.hideModal();
-        $state.transitionTo("tab.notes");
-    }
-})
 

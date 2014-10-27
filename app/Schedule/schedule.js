@@ -205,8 +205,6 @@
         var dateAlreadyExists = false;
         var locationAlreadyExists = false;
         var categoryAlreadyExists = false;
-        var mostCloseDate;
-        var actualDate = new Date();
         //Dates
         filter.datesFilter.forEach(function (dateFilter) {
             if (dateFilter.name == $scope.getDate(value.data.dateStart)) {
@@ -300,8 +298,6 @@
 
         $scope.events = allEvents;
         $scope.limit = 20;
-
-        $ionicLoading.hide();
 
         //});
     };
