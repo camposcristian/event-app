@@ -61,12 +61,12 @@
     };
     $scope.getInitTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getEndTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getTime = function (mins) {
@@ -135,12 +135,12 @@
 
     $scope.getInitTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getEndTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getTime = function (mins) {
@@ -383,6 +383,9 @@
     $scope.pageTitle = "Agenda";
     $scope.icon = "ion-android-alarm";
 
+    $scope.limitto = function (number) {
+        $scope.limit = number;
+    };
 
     //AL HACER CLICK EN EL RELOJ, CONFIGURAR ALARMA
     $scope.activityClick = function (id) {
@@ -397,12 +400,12 @@
     };
     $scope.getInitTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getEndTime = function (dateTime) {
         var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getUTCHours()) + ':' + $scope.getTime(date.getMinutes());
+        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
         return stringTime;
     };
     $scope.getTime = function (mins) {
@@ -506,6 +509,7 @@
         $scope.filterDates = filter.datesFilter;
         $scope.filterCategories = filter.categoriesFilter;
         $scope.filterLocation = filter.locationsFilter;
+        $scope.limit =50;
 
         return events;
     };
