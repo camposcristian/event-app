@@ -291,7 +291,6 @@
 
         Store.remove('AllEvents');
         Store.save('AllEvents', allEvents);
-        filter.datesFilter[4].checked = true;
         $scope.filterDates = filter.datesFilter;
         $scope.filterCategories = filter.categoriesFilter;
         $scope.filterLocation = filter.locationsFilter;
