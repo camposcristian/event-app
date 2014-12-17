@@ -4,9 +4,9 @@
 .controller('MoreController', function ($scope, $window, $location,$state, ApiFactory,WebApiFactory, UserProfile, Store) {
     $scope.isLog = false;
     $scope.updates = false;
-
+    $scope.twitter = localStorage["twitter"] || "CAC85"
     $scope.gotoTW = function () {
-        window.open("https://twitter.com/hashtag/85CAC?src=hash", '_system');
+        window.open("https://twitter.com/hashtag/"+$scope.twitter+"?src=hash", '_system');
     }
 
     $scope.$watch('$viewContentLoaded', function () {

@@ -5,22 +5,18 @@
         </ion-nav-buttons>
 
         <div class="list">
-            <div class="row" ng-repeat="note in notes" style="height:70px; border-bottom: 1px solid grey; padding:0 !important;">
+            <div class="row" ng-repeat="note in notes" style="height:70px; border-bottom: 1px solid grey; padding:0 !important; width>100%;">
 
-                <div class="col-10" style="border-right: 1px dashed grey; width: 100%; text-align: center; height: 100%; display: table;">
-                    <a class=" button button-icon icon ion-edit" href="#/tab/notes/{{$index}}" style="vertical-align: middle; display: table-cell;">
-                    </a>
-                </div>
-
-                <div class="col-80" style="padding-left: 20px; padding-top:10px;">
+                <div class="col-80" style="padding-left: 20px; padding-top:10px;" ng-click="edit({{$index}})">
                     <h4 style="margin-bottom:0;">{{note.title}}</h4>
                     <p style="font-size: 10px;">{{note.description}}</p>
                 </div>
 
-                <div class="col-10" style=" border-left: 1px dashed grey; width: 100%; text-align: center; height: 100%; display: table;">
+                <div class="col-20" style=" border-left: 1px dashed grey; width: 100%; text-align: center; height: 100%; display: table;">
                     <a class=" button button-icon icon ion-trash-a" ng-click="showModal({{$index}})" style="vertical-align: middle; display: table-cell;">
                     </a>
                 </div>
+
             </div>
         </div>
     </ion-content>

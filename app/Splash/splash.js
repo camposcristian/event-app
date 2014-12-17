@@ -1,6 +1,6 @@
 ﻿angular.module('aac.splash.controller', [])
 
-.controller('SplashController', function ($scope, $state, Store, WebApiFactory, $interval, $ionicLoading, $cacheFactory) {
+.controller('SplashController', function ($scope, $state, $http, Store, BaseUrl, WebApiFactory, $interval, $ionicLoading, $cacheFactory) {
     //Borrar todo lo referido al timer, dejar el go y el loading.
     //var $httpDefaultCache = $cacheFactory.get('$http');
     //$httpDefaultCache.remove("tables/Activity");
@@ -18,9 +18,11 @@
             Store.remove('AllEvents');
             Store.save('AllEvents', allEvents);
             $ionicLoading.hide();
-        }).error(function (data, status) {
+        })
+        .error(function (data, status) {
             $ionicLoading.show({ template: 'Error de conexión', noBackdrop: false });
-        }).finally(function () {
+        })
+        .finally(function () {
             $ionicLoading.show({ template: '<i class="icon ion-loading-c"></i><br/>Sincronizando Sponsors', noBackdrop: false });
             WebApiFactory.all('tables/Sponsor')
                 .success(function (allSponsors) {
@@ -75,7 +77,18 @@
                         $ionicLoading.show({ template: 'Compruebe su conexión a internet y vuelva a intentarlo', noBackdrop: true, duration: 1500 });
                     })
                     .finally(function () {
-                        $state.go('tab.home');
+                        $http.get(BaseUrl + "/api/ParameterAPI/Twitter", { cache: true, timeout: 6000 })
+                            .success(function (data) {
+                                Store.remove('twitter');
+                                Store.save('twitter', data.Value);
+                                $ionicLoading.hide();
+                            })
+                            .error(function (data, status) {
+                                $ionicLoading.show({ template: 'Compruebe su conexión a internet y vuelva a intentarlo', noBackdrop: true, duration: 1500 });
+                            })
+                            .finally(function () {
+                                $state.go('tab.home');
+                            });
                     });
             });
         });

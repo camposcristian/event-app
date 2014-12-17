@@ -13,47 +13,51 @@
 
         <!-- Center content -->
         <ion-side-menu-content>
-            <ion-content class="has-header">
-                <div class="bar bar-header item-input-inset search-bar" ng-show="showSearchBox">
-                    <label class="item-input-wrapper">
-                        <i class="icon ion-ios7-search placeholder-icon"></i>
-                        <input type="search" placeholder="Buscar" ng-model="searchQuery">
-                    </label>
-                </div>
-                <div>
-                    <ion-list>
-                        <ion-item ng-repeat="event in events | filter: searchQuery | filter: matchDate(filterDates) | filter: matchCategory(filterCategories) | filter: matchLocation(filterLocation) | limitTo: limit" collection-item-height="75" collection-item-width="getItemWidth(event)" class="scheduleEventPadding">
-                            <div class="row" style="padding:0; height:75px;">
-                                <div class="col-80" style="width:80%;">
-                                    <div class="row">
-                                        <div class="col-25" style="width:25%;">
-                                            <div style="font-size: 16px; font-weight: bold; width: 100%; margin: 0 auto 5px; text-align:center; ">{{getDateName(event.data.dateStart)}}</div>
-                                            <div style="font-size: 10px; width: 100%; text-align: center;">{{getDate(event.data.dateStart)}}</div>
-                                            <div style="font-size: 9px; width: 100%; text-align: center;">{{getInitTime(event.data.dateStart)}} - {{getEndTime(event.data.dateFinish)}}</div>
-                                        </div>
-                                        <div class="col-75" style="padding-left: 10px; width:75%; cursor:pointer; border-left: 5px solid {{event.data.categoryColor}}" ng-click="goToEvent({{event.data.id}})">
-                                            <h5 style="font-weight:bold;">{{slice(event.data.title)}}</h5>
-                                            <h6><i class="icon ion-pricetag" style="margin-right: 5px;"></i>{{event.data.categoryName}}</h6>
-                                            <h6 style="margin-bottom: -3px;"><i class="icon ion-location" style="margin-right: 9px;"></i>{{event.data.location}}</h6>
-                                            <div class="row" style="padding-top: 0; padding-left: 0;">
-                                                <div class="col col-10" style="padding-top: 0; padding-left: 0; max-width: 15px;">
-                                                    <h6 style="display: inline !important; margin-right: -3px; "><i class="icon ion-person-stalker" style="margin-right: 5px;"></i></h6>
-                                                </div>
-                                                <div class="col col-90" style="padding-top: 7px; padding-left: 0;">
-                                                    <h6 ng-repeat="speaker in event.data.speakers" style="display:block !important; font-size:9px;">
-                                                        {{speaker.completeName}} - {{speaker.function}}
-                                                    </h6>
-                                                </div>
+            <ion-header-bar align-title="center" class="bar bar-energized bar-subheader" ng-show="isFiltered">
+                <h4 class="title title-center" style="font-size: 13px; text-align: left;">
+                    Filtrado en la fecha {{dateSelected.name}} durante la {{timeSelected}}
+                </h4>
+                <a class="button button-icon icon ion-arrow-up-c" ng-click="isFiltered = !isFiltered"></a>
+            </ion-header-bar>
+            <ion-header-bar class="bar bar-subheader item-input-inset search-bar" ng-show="showSearchBox">
+                <label class="item-input-wrapper">
+                    <i class="icon ion-ios7-search placeholder-icon"></i>
+                    <input type="search" placeholder="Buscar" ng-model="searchQuery">
+                </label>
+            </ion-header-bar>
+            <ion-content class="has-header has-subheader">
+                <div class="list">
+                    <div class="item scheduleEventPadding" collection-repeat="event in events | filter: searchQuery | filter: matchDate(dateSelected.name) | filter: matchCategory(filterCategories) | filter: matchLocation(filterLocation)|filter: matchTime(filterTime)" collection-item-height="75" collection-item-width="getItemWidth(event)">
+                        <div class="row" style="padding:0; height:75px;">
+                            <div class="col-80" style="width:80%;">
+                                <div class="row">
+                                    <div class="col-25" style="width:25%;">
+                                        <div style="font-size: 16px; font-weight: bold; width: 100%; margin: 0 auto 5px; text-align:center; ">{{getDateName(event.data.dateStart)}}</div>
+                                        <div style="font-size: 10px; width: 100%; text-align: center;">{{getDate(event.data.dateStart)}}</div>
+                                        <div style="font-size: 9px; width: 100%; text-align: center;">{{getInitTime(event.data.dateStart)}} - {{getEndTime(event.data.dateFinish)}}</div>
+                                    </div>
+                                    <div class="col-75" style="padding-left: 10px; width:75%; cursor:pointer; border-left: 5px solid {{event.data.categoryColor}}" ng-click="goToEvent({{event.data.id}})">
+                                        <h5 style="font-weight:bold;">{{slice(event.data.title)}}</h5>
+                                        <h6><i class="icon ion-pricetag" style="margin-right: 5px;"></i>{{event.data.categoryName}}</h6>
+                                        <h6 style="margin-bottom: -3px;"><i class="icon ion-location" style="margin-right: 9px;"></i>{{event.data.location}}</h6>
+                                        <div class="row" style="padding-top: 0; padding-left: 0;">
+                                            <div class="col col-10" style="padding-top: 0; padding-left: 0; max-width: 15px;">
+                                                <h6 style="display: inline !important; margin-right: -3px; "><i class="icon ion-person-stalker" style="margin-right: 5px;"></i></h6>
+                                            </div>
+                                            <div class="col col-90" style="padding-top: 7px; padding-left: 0;">
+                                                <h6 ng-repeat="speaker in event.data.speakers" style="display:block !important; font-size:9px;">
+                                                    {{speaker.completeName}} - {{speaker.function}}
+                                                </h6>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-20" style="border-left: 1px dashed grey; width:20%;">
-                                    <a class="button button-icon icon {{icon}}" ng-click="activityClick({{event.data.id}})" ng-class="{positive: event.checked}" style="width: 100%;"></a>
-                                </div>
                             </div>
-                        </ion-item>
-                    </ion-list>
+                            <div class="col-20" style="border-left: 1px dashed grey; width:20%;">
+                                <a class="button button-icon icon {{icon}}" ng-click="activityClick({{event.data.id}})" ng-class="{positive: event.checked}" style="width: 100%;"></a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </ion-content>
         </ion-side-menu-content>
@@ -79,36 +83,20 @@
                         </ion-checkbox>
                     </div>
                 </ion-list>
-
                 <ion-item class="item-stable"
-                          ng-click="toggleGroup(limitation)"
-                          ng-class="{active: isGroupShown(limitation)}" style="font-weight: bold; font-size: 14px; padding:10px;">
-                    <i class="icon" ng-class="isGroupShown(limitation) ? 'ion-minus' : 'ion-plus'"></i>
+                          ng-click="toggleGroup(radioGroups)"
+                          ng-class="{active: isGroupShown(radioGroups)}" style="font-weight: bold; font-size: 14px; padding:10px;">
+                    <i class="icon" ng-class="isGroupShown(radioGroups) ? 'ion-minus' : 'ion-plus'"></i>
                     &nbsp;
-                    Limite
+                    {{radioGroups.name}}
                 </ion-item>
-                <div class="list">
-                    <label class="item item-radio" ng-show="isGroupShown(limitation)">
-                        <input type="radio" name="group" ng-click="limitto(20)" checked="checked">
-                        <div class="item-content">
-                            20
-                        </div>
-                        <i class="radio-icon ion-checkmark"></i>
-                    </label>
-                    <label class="item item-radio" ng-show="isGroupShown(limitation)">
-                        <input type="radio" name="group" ng-click="limitto(50)">
-                        <div class="item-content">
-                            50
-                        </div>
-                        <i class="radio-icon ion-checkmark"></i>
-                    </label>
-                    <label class="item item-radio" ng-show="isGroupShown(limitation)">
-                        <input type="radio" name="group" ng-click="limitto(150)">
-                        <div class="item-content">
-                            150
-                        </div>
-                        <i class="radio-icon ion-checkmark"></i>
-                    </label>
+                <ion-radio class="item-accordion"
+                           ng-repeat="item in getItemsFromGroup(radioGroups)"
+                           ng-model="dateSelected.name"
+                           ng-value="item.name"
+                           ng-show="isGroupShown(radioGroups)" style="font-size:10px;">
+                    {{item.name}}
+                </ion-radio>
         </ion-side-menu>
     </ion-side-menus>
 </ion-view>

@@ -1,7 +1,7 @@
 ﻿angular.module('aac.schedule.controller', [])
 
     //EVENT CONTROLLER
-.controller('ActivityController', function ($scope, $stateParams, Store, $ionicLoading, $cordovaCalendar, $state) {
+.controller('ActivityController', function ($scope, $rootScope, $stateParams, Store, $ionicLoading, $cordovaCalendar, $state) {
 
     $scope.carga = function () {
         var allEvents = Store.get('AllEvents');
@@ -53,51 +53,11 @@
         $scope.event.checked = !$scope.event.checked;
     };
 
-    //DATETIME PARSERS
-    $scope.getDate = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-        return stringDate;
-    };
-    $scope.getInitTime = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
-        return stringTime;
-    };
-    $scope.getEndTime = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
-        return stringTime;
-    };
-    $scope.getTime = function (mins) {
-        if (mins < 10)
-        { mins = '0' + mins; }
-
-        return mins;
-    };
-    $scope.getDateName = function (dateTime) {
-        var date = new Date(dateTime);
-        var day = date.getDate();
-        if (day == "01")
-            return "SAB";
-        else if (day == "02")
-            return "DOM";
-        else if (day == "03")
-            return "LUN";
-        else if (day == "04")
-            return "MAR"
-        else if (day == "05")
-            return "MIE"
-        else if (day == "06")
-            return "JUE"
-        else
-            return "LOL";
-    };
 
 
 })
     // SCHEDULE CONTROLLER
-.controller('ScheduleController', function ($scope, $ionicSideMenuDelegate, $location,
+.controller('ScheduleController', function ($scope, $rootScope, $ionicSideMenuDelegate, $location,
      Store, WebApiFactory, $cordovaCalendar, $ionicLoading) {
 
     $scope.getItemWidth = function (item) {
@@ -107,49 +67,6 @@
 
     $scope.pageTitle = "Cronograma";
     $scope.icon = "ion-android-checkmark";
-
-    //DATETIME PARSERS
-    $scope.getDate = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-        return stringDate;
-    };
-    $scope.getDateName = function (dateTime) {
-        var date = new Date(dateTime);
-        var day = date.getDate();
-        if (day == "01")
-            return "SAB";
-        else if (day == "02")
-            return "DOM";
-        else if (day == "03")
-            return "LUN";
-        else if (day == "04")
-            return "MAR"
-        else if (day == "05")
-            return "MIE"
-        else if (day == "06")
-            return "JUE"
-        else
-            return "LOL";
-    };
-
-    $scope.getInitTime = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
-        return stringTime;
-    };
-    $scope.getEndTime = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
-        return stringTime;
-    };
-    $scope.getTime = function (mins) {
-        if (mins < 10)
-        { mins = '0' + mins; }
-
-        return mins;
-    };
-
 
     //AL HACER CLICK EN EL CHECK, GUARDAR EN LOCAL EL EVENTO QUE ASISTIRA
     $scope.activityClick = function (id) {
@@ -196,25 +113,50 @@
     //Busqueda
     $scope.searchQuery = "";
     $scope.showSearchBox = false;
-    $scope.limitto = function (number) {
-        $scope.limit = number;
-    };
+    $scope.isFiltered = true;
     //Carga de filtros lateral
-    $scope.filterGroups = [{ name: 'Fecha' }, { name: 'Categoria' }, { name: 'Salon' }];
+    $scope.filterGroups = [{ name: 'Horario' }, { name: 'Categoria' }, { name: 'Salon' }];
+    $scope.radioGroups = { name: 'Fecha' };
+
     $scope.loadFilterMenu = function (value, filter) {
         var dateAlreadyExists = false;
         var locationAlreadyExists = false;
         var categoryAlreadyExists = false;
+        var dateChecked = false;
+        var date = new Date();
+        if (date.getHours() <= 13) {
+            filter.timeFilter = [{ name: "Mañana", checked: true }, { name: "Tarde", checked: false }];
+            $scope.timeSelected = filter.timeFilter[0].name;
+        }
+        else {
+            filter.timeFilter = [{ name: "Mañana", checked: false }, { name: "Tarde", checked: true }];
+            $scope.timeSelected = filter.timeFilter[1].name;
+        }
+
         //Dates
         filter.datesFilter.forEach(function (dateFilter) {
-            if (dateFilter.name == $scope.getDate(value.data.dateStart)) {
+            if (dateFilter.name == $rootScope.getDate(value.data.dateStart)) {
                 dateAlreadyExists = true
+            }
+            if (dateFilter.checked == true) {
+                dateChecked = true;
             }
         });
 
+
         if (!dateAlreadyExists) {
-            var newDate = { name: $scope.getDate(value.data.dateStart), checked: false };
+            var dateName = $rootScope.getDate(value.data.dateStart)
+            var newDate = { name: dateName, checked: false };
+            var dateToday = $rootScope.getDate(new Date());
+            if (dateToday == dateName) {
+                $scope.dateSelected = { name: newDate.name };
+            }
             filter.datesFilter.push(newDate);
+        }
+
+        if (!dateChecked) {
+            var newDate = { name: $rootScope.getDate(value.data.dateStart), checked: false };
+            $scope.dateSelected = { name: filter.datesFilter[0].name };
         }
 
         //Categories
@@ -245,6 +187,9 @@
         return filter;
     };
     $scope.getItemsFromGroup = function (group) {
+        if (group.name == 'Horario') {
+            return $scope.filterTime;
+        }
         if (group.name == 'Fecha') {
             return $scope.filterDates;
         }
@@ -263,7 +208,7 @@
     $scope.carga = function () {
 
         var allEvents = [];
-        var filter = { datesFilter: [], categoriesFilter: [], locationsFilter: [] };
+        var filter = { timeFilter: [], datesFilter: [], categoriesFilter: [], locationsFilter: [] };
         //WebApiFactory.all('tables/Activity').success(function (activities) {
         //    var data = activities;
         //    data.forEach(function (entry) {
@@ -291,16 +236,14 @@
 
         Store.remove('AllEvents');
         Store.save('AllEvents', allEvents);
+        $scope.filterTime = filter.timeFilter;
         $scope.filterDates = filter.datesFilter;
         $scope.filterCategories = filter.categoriesFilter;
         $scope.filterLocation = filter.locationsFilter;
-
         $scope.events = allEvents;
-        $scope.limit = 20;
 
         //});
     };
-
     $scope.carga();
 
     ///SIDE MENU
@@ -321,19 +264,9 @@
 
     //FILTERS
     $scope.matchDate = function (filterDates) {
+        var dateChosen = filterDates;
         return function (event) {
-            var isMatched = false;
-            var allUnchecked = true;
-            filterDates.forEach(function (filter) {
-                if (filter.checked)
-                { allUnchecked = false }
-                if (filter.name == $scope.getDate(event.data.dateStart) && filter.checked == true)
-                { isMatched = true }
-            });
-            if (allUnchecked)
-            { return allUnchecked }
-
-            return isMatched;
+            return dateChosen == $scope.getDate(event.data.dateStart) || dateChosen == "all";
         }
     };
     $scope.matchCategory = function (filterCategories) {
@@ -360,6 +293,23 @@
                 if (filter.checked)
                 { allUnchecked = false }
                 if (filter.name == event.data.location && filter.checked == true)
+                { isMatched = true }
+            });
+            if (allUnchecked)
+            { return allUnchecked }
+
+            return isMatched;
+        }
+    };
+    $scope.matchTime = function (filterTime) {
+        return function (event) {
+            var isMatched = false;
+            var allUnchecked = true;
+            filterTime.forEach(function (filter) {
+                var date = new Date(event.data.dateStart);
+                if (filter.checked)
+                { allUnchecked = false }
+                if ((filter.name == "Mañana" && date.getHours() <= 13 && filter.checked == true) || (filter.name == "Tarde" && date.getHours() > 13 && filter.checked == true))
                 { isMatched = true }
             });
             if (allUnchecked)
@@ -377,227 +327,47 @@
 
 })
     //MY SCHEDULE CONTROLLER
-.controller('MyScheduleController', function ($scope, $ionicSideMenuDelegate, $location, Store, $ionicLoading) {
-
-    $scope.pageTitle = "Agenda";
-    $scope.icon = "ion-android-alarm";
-
-    $scope.limitto = function (number) {
-        $scope.limit = number;
-    };
-
-    //AL HACER CLICK EN EL RELOJ, CONFIGURAR ALARMA
-    $scope.activityClick = function (id) {
-        $ionicLoading.show({ template: 'Opción no disponible', noBackdrop: true, duration: 2000 });
-    };
-
-    //DATETIME PARSERS
-    $scope.getDate = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
-        return stringDate;
-    };
-    $scope.getInitTime = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
-        return stringTime;
-    };
-    $scope.getEndTime = function (dateTime) {
-        var date = new Date(dateTime);
-        var stringTime = $scope.getTime(date.getHours()) + ':' + $scope.getTime(date.getMinutes());
-        return stringTime;
-    };
-    $scope.getTime = function (mins) {
-        if (mins < 10)
-        { mins = '0' + mins; }
-
-        return mins;
-    };
-    $scope.getDateName = function (dateTime) {
-        var date = new Date(dateTime);
-        var day = date.getDate();
-        if (day == "01")
-            return "SAB";
-        else if (day == "02")
-            return "DOM";
-        else if (day == "03")
-            return "LUN";
-        else if (day == "04")
-            return "MAR"
-        else if (day == "05")
-            return "MIE"
-        else if (day == "06")
-            return "JUE"
-        else
-            return "LOL";
-    };
-
-    //Busqueda
-    $scope.searchQuery = "";
-    $scope.showSearchBox = false;
-
-    //Carga de filtros lateral
-    $scope.filterGroups = [{ name: 'Fecha' }, { name: 'Categoria' }, { name: 'Salon' }];
-    $scope.loadFilterMenu = function (value, filter) {
-        var dateAlreadyExists = false;
-        var locationAlreadyExists = false;
-        var categoryAlreadyExists = false;
-
-        //Dates
-        filter.datesFilter.forEach(function (dateFilter) {
-            if (dateFilter.name == $scope.getDate(value.data.dateStart)) {
-                dateAlreadyExists = true
-            }
-        });
-
-        if (!dateAlreadyExists) {
-            var newDate = { name: $scope.getDate(value.data.dateStart), checked: false };
-            filter.datesFilter.push(newDate);
-        }
-
-        //Categories
-        filter.categoriesFilter.forEach(function (categoryFilter) {
-            if (categoryFilter.name == value.data.categoryName) {
-                categoryAlreadyExists = true
-            }
-        });
-
-        if (!categoryAlreadyExists) {
-            var newCategory = { name: value.data.categoryName, checked: false };
-            filter.categoriesFilter.push(newCategory);
-        }
-
-        //Location
-        filter.locationsFilter.forEach(function (locationFilter) {
-            if (locationFilter.name == value.data.location) {
-                locationAlreadyExists = true
-            }
-        });
-
-        if (!locationAlreadyExists) {
-            var newLocation = { name: value.data.location, checked: false };
-            filter.locationsFilter.push(newLocation);
-        }
+.controller('MyScheduleController', function ($scope, $controller, $rootScope, $ionicSideMenuDelegate, $location, Store, $ionicLoading) {
 
 
-        return filter;
-    };
-    $scope.getItemsFromGroup = function (group) {
-        if (group.name == 'Fecha') {
-            return $scope.filterDates;
-        }
-        if (group.name == 'Categoria') {
-            return $scope.filterCategories;
-        }
-        if (group.name == 'Salon') {
-            return $scope.filterLocation;
-        }
+    $controller('ScheduleController', { $scope: $scope }); //This works
 
-        return null;
-    }
+   
+    $scope.isFiltered = false;
 
     //CARGA INICIAL
     $scope.carga = function () {
-        var filter = { datesFilter: [], categoriesFilter: [], locationsFilter: [] };
+        var filter = { timeFilter: [], datesFilter: [], categoriesFilter: [], locationsFilter: [] };
         var events = Store.get('MyEvents');
 
         events.forEach(function (event) {
             filter = $scope.loadFilterMenu(event, filter);
         });
 
+        filter.timeFilter.forEach(function (filter) {
+            filter.checked = false;
+        })
+        $scope.dateSelected.name = "all";
+        $scope.filterTime = filter.timeFilter;
         $scope.filterDates = filter.datesFilter;
         $scope.filterCategories = filter.categoriesFilter;
         $scope.filterLocation = filter.locationsFilter;
-        $scope.limit =50;
 
         return events;
     };
     $scope.events = $scope.carga();
 
 
-    //ACORTAR EL TITULO DEL EVENTO PARA MEJORAR LA VISTA
-    $scope.slice = function (title) {
-        if (title.length < 50)
-            return title;
 
-        var sliced = title.slice(0, 50) + "...";
-        return sliced;
-    }
+    $scope.pageTitle = "Agenda";
+    $scope.icon = "ion-android-alarm";
 
-
-
-    //FILTERS
-    $scope.matchDate = function (filterDates) {
-        return function (event) {
-            var isMatched = false;
-            var allUnchecked = true;
-            filterDates.forEach(function (filter) {
-                if (filter.checked)
-                { allUnchecked = false }
-                if (filter.name == $scope.getDate(event.data.dateStart) && filter.checked == true)
-                { isMatched = true }
-            });
-            if (allUnchecked)
-            { return allUnchecked }
-
-            return isMatched;
-        }
-    };
-    $scope.matchCategory = function (filterCategories) {
-        return function (event) {
-            var isMatched = false;
-            var allUnchecked = true;
-            filterCategories.forEach(function (filter) {
-                if (filter.checked)
-                { allUnchecked = false }
-                if (filter.name == event.data.categoryName && filter.checked == true)
-                { isMatched = true }
-            });
-            if (allUnchecked)
-            { return allUnchecked }
-
-            return isMatched;
-        }
-    };
-    $scope.matchLocation = function (filterLocations) {
-        return function (event) {
-            var isMatched = false;
-            var allUnchecked = true;
-            filterLocations.forEach(function (filter) {
-                if (filter.checked)
-                { allUnchecked = false }
-                if (filter.name == event.data.location && filter.checked == true)
-                { isMatched = true }
-            });
-            if (allUnchecked)
-            { return allUnchecked }
-
-            return isMatched;
-        }
+    //AL HACER CLICK EN EL RELOJ, CONFIGURAR ALARMA
+    $scope.activityClick = function (id) {
+        $ionicLoading.show({ template: 'Opción no disponible', noBackdrop: true, duration: 2000 });
     };
 
 
-
-    //SIDE MENU
-    $scope.toggleRight = function () {
-        $ionicSideMenuDelegate.toggleRight();
-    };
-    $scope.toggleGroup = function (group) {
-        if ($scope.isGroupShown(group)) {
-            $scope.shownGroup = null;
-        } else {
-            $scope.shownGroup = group;
-        }
-    };
-    $scope.isGroupShown = function (group) {
-        return $scope.shownGroup === group;
-    };
-
-
-    //GO TO ACTIVITY DETAILS
-    $scope.goToEvent = function (id) {
-        $location.path("/tab/mySchedule/activity/" + id);
-    };
 });
 
 

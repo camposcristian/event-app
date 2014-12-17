@@ -6,7 +6,10 @@
     background-image: none;
     border: none;
 }
-
+.title-center {
+    left:0 !important;
+    right: 0!important;
+}
 .bar .title {
     color: #eee;
 }

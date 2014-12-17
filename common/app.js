@@ -7,7 +7,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('aac', ['ionic', 'aac.controllers', 'aac.services', 'ngCordova'])
 
-.run(function ($ionicPlatform) {
+.run(function ($ionicPlatform, $rootScope) {
     $ionicPlatform.ready(function () {
         // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
         // for form inputs)
@@ -18,12 +18,53 @@ angular.module('aac', ['ionic', 'aac.controllers', 'aac.services', 'ngCordova'])
             // org.apache.cordova.statusbar required
             StatusBar.styleDefault();
         }
+        //DATETIME PARSERS
+        $rootScope.getDate = function (dateTime) {
+            var date = new Date(dateTime);
+            var stringDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear();
+            return stringDate;
+        };
+        $rootScope.getInitTime = function (dateTime) {
+            var date = new Date(dateTime);
+            var stringTime = $rootScope.getTime(date.getHours()) + ':' + $rootScope.getTime(date.getMinutes());
+            return stringTime;
+        };
+        $rootScope.getEndTime = function (dateTime) {
+            var date = new Date(dateTime);
+            var stringTime = $rootScope.getTime(date.getHours()) + ':' + $rootScope.getTime(date.getMinutes());
+            return stringTime;
+        };
+        $rootScope.getTime = function (mins) {
+            if (mins < 10)
+            { mins = '0' + mins; }
+            return mins;
+        };
+        $rootScope.getDateName = function (dateTime) {
+            var date = new Date(dateTime);
+            var day = date.getDate();
+            if (day == "01")
+                return "SAB";
+            else if (day == "02")
+                return "DOM";
+            else if (day == "03")
+                return "LUN";
+            else if (day == "04")
+                return "MAR"
+            else if (day == "05")
+                return "MIE"
+            else if (day == "06")
+                return "JUE"
+            else
+                return "LOL";
+        };
+
     });
 })
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider, $compileProvider) {
     $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|file|blob|cdvfile|content):|data:image\//);
 
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+
 
 
     // Ionic uses AngularUI Router which uses the concept of states

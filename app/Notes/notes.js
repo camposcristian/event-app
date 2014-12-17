@@ -11,6 +11,10 @@
         $state.transitionTo("tab.note", { Index: $scope.notes.length });
     }
 
+    $scope.edit = function (index) {
+        $state.go("tab.note", { Index: index })
+    }
+
     $scope.showModal = function (index) {
         $scope.indexToDelete = index;
         var confirmPopup = $ionicPopup.confirm({

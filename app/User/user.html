@@ -5,21 +5,16 @@
                 <button class="button button-icon icon color-white" ng-show="isProfile" ng-click="goToEditUser({{user.Id}})">Edit</button>
             </ion-nav-buttons>
             <div class="item item-thumbnail-left">
-
                 <img ng-src="{{profileImage}}" />
                 <h2>{{user.CompleteName}}</h2>
                 <p>{{user.StudyField}}</p>
             </div>
 
             <div class="list">
-
-
-
                 <div class="item ">
                     <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isQr || isProfile">Organización: </h2> <span ng-show="isQr || isProfile">{{user.Organization}} </span></div>
                     <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isQr || isProfile">Cargo: </h2> <span ng-show="isQr || isProfile">{{user.Function}} </span></div>
                     <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isQr || isProfile">Título: </h2> <span ng-show="isQr || isProfile">{{user.Title}} </span></div>
-
                     <div style="margin-bottom:10px"><h2 style="display: inline; ">País: </h2> <span>{{user.Country}} </span></div>
                     <div style="margin-bottom:10px"><h2 style="display: inline; ">Provincia: </h2> <span>{{user.State}} </span></div>
                     <div style="margin-bottom:10px"><h2 style="display: inline; ">Ciudad: </h2> <span>{{user.City}} </span></div>
@@ -27,8 +22,6 @@
                     <div style="margin-bottom:10px"><h2 style="display: inline; " ng-show="isQr || isProfile">Telefono: </h2> <span ng-show="isQr || isProfile">{{user.Tel}} </span></div>
                     <button ng-click="addContact()" class="button ion-android-add-contact button-block button-positive" ng-show="isQr">Agregar Contacto</button>
                     <!--<h2 style="display: inline; ">Edad: </h2> <span>45 Años</span><br />-->
-
-
                 </div>
 
                 <!--div class="item item-avatar">
