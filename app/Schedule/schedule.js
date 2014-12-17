@@ -241,6 +241,7 @@
         $scope.filterCategories = filter.categoriesFilter;
         $scope.filterLocation = filter.locationsFilter;
         $scope.events = allEvents;
+        $scope.isFiltered = allEvents.length != 0;
 
         //});
     };
