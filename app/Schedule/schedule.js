@@ -333,7 +333,7 @@
 
     $controller('ScheduleController', { $scope: $scope }); //This works
 
-   
+
     $scope.isFiltered = false;
 
     //CARGA INICIAL
@@ -348,7 +348,9 @@
         filter.timeFilter.forEach(function (filter) {
             filter.checked = false;
         })
-        $scope.dateSelected.name = "all";
+        if ($scope.dateSelected) {
+            $scope.dateSelected.name = "all";
+        }
         $scope.filterTime = filter.timeFilter;
         $scope.filterDates = filter.datesFilter;
         $scope.filterCategories = filter.categoriesFilter;
