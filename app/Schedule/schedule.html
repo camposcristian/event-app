@@ -36,7 +36,7 @@
                                         <div style="font-size: 10px; width: 100%; text-align: center;">{{getDate(event.data.dateStart)}}</div>
                                         <div style="font-size: 9px; width: 100%; text-align: center;">{{getInitTime(event.data.dateStart)}} - {{getEndTime(event.data.dateFinish)}}</div>
                                     </div>
-                                    <div class="col-75" style="padding-left: 10px; width:75%; cursor:pointer; border-left: 5px solid {{event.data.categoryColor}}" ng-click="goToEvent({{event.data.id}})">
+                                    <div class="col-75" style="padding-left: 10px; width:75%; cursor:pointer; border-left: 5px solid {{event.data.categoryColor}}" ng-click="goToEvent(event.data.id)">
                                         <h5 style="font-weight:bold;">{{slice(event.data.title)}}</h5>
                                         <h6><i class="icon ion-pricetag" style="margin-right: 5px;"></i>{{event.data.categoryName}}</h6>
                                         <h6 style="margin-bottom: -3px;"><i class="icon ion-location" style="margin-right: 9px;"></i>{{event.data.location}}</h6>
