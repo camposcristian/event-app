@@ -3,10 +3,11 @@
     //EVENT CONTROLLER
 .controller('ActivityController', function ($scope, $rootScope, $stateParams, Store, $ionicLoading, $cordovaCalendar, $state) {
 
+
+
     $scope.carga = function () {
         var allEvents = Store.get('AllEvents');
         var event = null;
-
         var myEvents = Store.get('MyEvents');
         var ids = [];
         myEvents.forEach(function (entry) {
@@ -54,11 +55,19 @@
     };
 
 
-
 })
     // SCHEDULE CONTROLLER
 .controller('ScheduleController', function ($scope, $rootScope, $ionicSideMenuDelegate, $location,
      Store, WebApiFactory, $cordovaCalendar, $ionicLoading) {
+
+    $scope.pullDown = "margin-top: 42px;";
+    $scope.buttonClass = "color-white";
+
+    $scope.hideFilter = function () {
+        $scope.pullDown = null;
+        $scope.isFiltered = false;
+        $scope.buttonClass = "color-black";
+    }
 
     $scope.getItemWidth = function (item) {
         return '80%';
@@ -149,14 +158,14 @@
             var newDate = { name: dateName, checked: false };
             var dateToday = $rootScope.getDate(new Date());
             if (dateToday == dateName) {
-                $scope.dateSelected = { name: newDate.name };
+                $scope.dateSelected = { name: newDate.name, date : new Date(newDate.name) };
             }
             filter.datesFilter.push(newDate);
         }
 
         if (!dateChecked) {
             var newDate = { name: $rootScope.getDate(value.data.dateStart), checked: false };
-            $scope.dateSelected = { name: filter.datesFilter[0].name };
+            $scope.dateSelected = { name: filter.datesFilter[0].name, date: new Date(newDate.name) };
         }
 
         //Categories
@@ -335,6 +344,7 @@
 
 
     $scope.isFiltered = false;
+    $scope.pullDown = null;
 
     //CARGA INICIAL
     $scope.carga = function () {

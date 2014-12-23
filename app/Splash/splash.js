@@ -44,19 +44,19 @@
                         });
                     };
 
-                    if (platinum.length > 0) {
+                    if (platinum.length >= 0) {
                         Store.remove('SponsorsPlatinum');
                         Store.save('SponsorsPlatinum', platinum);
                     }
-                    if (gold.length > 0) {
+                    if (gold.length >= 0) {
                         Store.remove('SponsorsGold');
                         Store.save('SponsorsGold', gold);
                     }
-                    if (silver.length > 0) {
+                    if (silver.length >= 0) {
                         Store.remove('SponsorsSilver');
                         Store.save('SponsorsSilver', silver);
                     }
-                    if (banner.length > 0) {
+                    if (banner.length >= 0) {
                         Store.remove('Banner');
                         Store.save('Banner', banner);
                     }
