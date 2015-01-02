@@ -158,14 +158,14 @@
             var newDate = { name: dateName, checked: false };
             var dateToday = $rootScope.getDate(new Date());
             if (dateToday == dateName) {
-                $scope.dateSelected = { name: newDate.name, date : new Date(newDate.name) };
+                $scope.dateSelected = { name: newDate.name, date: new Date(value.data.dateStart) };
             }
             filter.datesFilter.push(newDate);
         }
 
         if (!dateChecked) {
             var newDate = { name: $rootScope.getDate(value.data.dateStart), checked: false };
-            $scope.dateSelected = { name: filter.datesFilter[0].name, date: new Date(newDate.name) };
+            $scope.dateSelected = { name: filter.datesFilter[0].name, date: new Date(value.data.dateStart) };
         }
 
         //Categories

@@ -15,7 +15,7 @@
         <ion-side-menu-content>
             <ion-header-bar align-title="center" class="bar bar-energized bar-subheader" ng-show="isFiltered">
                 <h4 class="title title-center" style="font-size: 13px; text-align: left;">
-                    Filtrado en la fecha {{dateSelected.date.getDay()+'/'+dateSelected.date.getDate()}} durante la {{timeSelected}}
+                    Filtrado en la fecha {{dateSelected.date.getDate()+'/'+(dateSelected.date.getMonth()+1)}} durante la {{timeSelected}}
                 </h4>
                 <a class="button button-icon icon ion-arrow-up-c" ng-click="hideFilter()"></a>
             </ion-header-bar>
@@ -26,8 +26,8 @@
                 </label>
             </ion-header-bar>
             <ion-content class="has-header has-subheader">
-                <div class="list">
-                    <div class="item scheduleEventPadding" style="{{pullDown}}" collection-repeat="event in events | filter: searchQuery | filter: matchDate(dateSelected.name) | filter: matchCategory(filterCategories) | filter: matchLocation(filterLocation)|filter: matchTime(filterTime)" collection-item-height="75" collection-item-width="getItemWidth(event)">
+                <div class="list" style="{{pullDown}}">
+                    <div class="item scheduleEventPadding" collection-repeat="event in events | filter: searchQuery | filter: matchDate(dateSelected.name) | filter: matchCategory(filterCategories) | filter: matchLocation(filterLocation)|filter: matchTime(filterTime)" collection-item-height="75" collection-item-width="getItemWidth(event)">
                         <div class="row" style="padding:0; height:75px;">
                             <div class="col-80" style="width:80%;">
                                 <div class="row">
