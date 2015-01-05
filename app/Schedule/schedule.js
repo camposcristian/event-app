@@ -66,7 +66,7 @@
     $scope.hideFilter = function () {
         $scope.pullDown = null;
         $scope.isFiltered = false;
-        $scope.buttonClass = "color-black";
+        $scope.buttonClass = "energized";
     }
 
     $scope.getItemWidth = function (item) {
@@ -259,6 +259,7 @@
     ///SIDE MENU
     $scope.toggleRight = function () {
         $ionicSideMenuDelegate.toggleRight();
+        $scope.hideFilter();
     };
     $scope.toggleGroup = function (group) {
         if ($scope.isGroupShown(group)) {
