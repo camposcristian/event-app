@@ -569,3 +569,7 @@
     margin-left: auto;
     display: table-cell;
 }
+
+button.button.button-icon.icon.ion-funnel.energized {
+    color: #f0b840;
+}
