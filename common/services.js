@@ -126,7 +126,7 @@ angular.module('aac.services',
 
 
 .factory('WebApiToken', function () {
-    return 'chSBZxVuAHaqpGOPYZzAcCONSfoPlS27';
+    return 'zidCPzVtyrBCKtjSlEdPznLIaHfiSy54';
 })
 
 
