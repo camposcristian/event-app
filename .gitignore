@@ -4,3 +4,5 @@ README.md
 Web.config
 packages.config
 website.publishproj
+
+lib/
